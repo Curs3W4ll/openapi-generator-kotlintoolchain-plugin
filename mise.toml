@@ -1,0 +1,10 @@
+[tools]
+java = "corretto-21"
+
+[settings]
+experimental = true
+
+[hooks]
+enter = [
+    "mise i -q",
+]

@@ -11,7 +11,14 @@ automatically registers the produced Kotlin sources as a source set — no manua
 
 ## Requirements
 
-- None!
+### Dependencies
+
+- **[Mise](https://mise.jdx.dev/installing-mise.html#homebrew)**
+
+Mise will then install the multiple tools automatically.  
+See the `[tools]` table header in `mise.toml` for more details.
+
+To see the available mise tasks, use the `mise run` command.
 
 ## Contributing
 
