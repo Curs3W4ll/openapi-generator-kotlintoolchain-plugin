@@ -1,0 +1,155 @@
+# CI/CD Configuration Guide
+
+This document describes the architecture, patterns, and common tasks for this project GitLab CI/CD configuration.
+
+## Overview
+
+The CI/CD configuration spans different YAML files across `.gitlab-ci.yml` and `.gitlab/ci/`.
+
+## Directory Structure
+
+```
+.gitlab-ci.yml                    # Entry point: stages, workflow rules, global variables, includes
+.gitlab/ci/
+  version.yml                     # Pinned tool versions (Ruby, Go, Node, Chrome, etc.)
+  global.gitlab-ci.yml            # Shared foundations: retry, before_script, caches
+  rules.gitlab-ci.yml             # Centralized rules (~3,500 lines): conditions, file patterns, composite rules
+  releases.gitlab-ci.yml          # Release tagging
+```
+
+## Include Mechanism
+
+The main `.gitlab-ci.yml` uses a **wildcard include** to auto-register all top-level CI files:
+
+```yaml
+include:
+  - local: .gitlab/ci/*.gitlab-ci.yml
+```
+
+Adding a new `.gitlab/ci/foo.gitlab-ci.yml` file automatically includes it in the pipeline. No manual registration
+needed.
+
+Conditional includes handle special cases:
+
+- `overrides/skip.yml` -- only for security-canonical-sync MRs (creates a no-op pipeline)
+
+## Rules System
+
+`rules.gitlab-ci.yml` is the single largest file and the single source of truth for all job conditions. It uses three
+pattern types:
+
+### 1. Condition anchors (`.if-*`)
+
+Boolean conditions based on CI variables. Referenced via YAML anchors.
+
+```yaml
+.if-merge-request: &if-merge-request
+  if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ...'
+
+.if-default-branch-refs: &if-default-branch-refs
+  if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && ...'
+```
+
+### 2. File-change patterns (`.*-patterns`)
+
+Glob arrays for detecting which files changed. Referenced via YAML anchors.
+
+```yaml
+.ci-patterns: &ci-patterns
+  - "{,jh/}.gitlab-ci.yml"
+  - "{,jh/}.gitlab/ci/**/*"
+
+.plugin-core-patterns: &plugin-core-patterns
+  - "plugin-core/**/*"
+```
+
+### 3. Composite rule sets (`.category:rules:job-type`)
+
+Combine conditions + file patterns into complete `rules:` blocks that jobs reference via `extends:`.
+
+```yaml
+.rails:rules:ee-and-foss-default-rules:
+  rules:
+    - <<: *if-merge-request
+      changes: *plugin-core-patterns
+      when: never
+    - <<: *if-merge-request-labels-pipeline-expedite
+      when: never
+    - <<: *if-merge-request-labels-run-all-rspec
+      changes: *core-backend-patterns
+```
+
+Jobs use these via extends:
+
+```yaml
+rspec unit pg17:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-unit-parallel
+```
+
+## Shared Foundations
+
+### `global.gitlab-ci.yml`
+
+Defines reusable building blocks:
+
+- **`.default-retry`** -- retry policy (max 2 retries for infra failures)
+- **`.default-before_script`** -- standard before_script (FOSS mode, GOPATH, utils)
+- **`.use-docker-in-docker`** -- Docker-in-Docker setup
+- **Cache definitions** -- `.mise-cache`, `.kotlin-toolchain-cache`, `.assets-cache`, etc.
+
+## Child Pipelines
+
+Child pipelines are triggered via `trigger:` jobs. Key patterns:
+
+## Workflow Rules
+
+The `workflow:rules:` block in `.gitlab-ci.yml` determines:
+
+- Whether a pipeline runs at all
+- The pipeline name
+- Special variable overrides (e.g., `BUNDLE_GEMFILE: Gemfile.next` for rails-next)
+
+Key pipeline types:
+
+- **MR pipelines** -- triggered by merge request events
+- **Default branch pipelines** -- pushes/merges to master
+- **Scheduled pipelines** -- nightly, weekly, maintenance
+- **Manual pipelines** -- e.g. for releases
+
+## Common Tasks
+
+### Add a new CI job
+
+1. Add the job to the appropriate `.gitlab/ci/*.gitlab-ci.yml` file (or create a new one -- it auto-includes via
+   wildcard).
+2. Define rules in `rules.gitlab-ci.yml` using existing condition anchors and file patterns.
+3. Extend shared foundations (`.default-retry`, `.default-before_script`, service mixins).
+
+### Add file-change patterns for a new area
+
+1. In `rules.gitlab-ci.yml`, add a new pattern anchor:
+   ```yaml
+   .my-new-patterns: &my-new-patterns
+     - "path/to/files/**/*"
+   ```
+2. Create composite rules that use the pattern with appropriate conditions.
+
+## External Dependencies
+
+The CI config pulls from external sources:
+
+- **CI Components**: `danger-review@2.1.0`, `allure-report@11.18.0`
+
+## Gotchas
+
+- **Wildcard auto-include**: Any new `*.gitlab-ci.yml` at the top level of `.gitlab/ci/` is automatically included.
+  Files in subdirectories are NOT auto-included.
+- **Rules first-match-wins**: GitLab CI `rules:` uses first-match-wins semantics. Order matters. Put `when: never`
+  exclusions before `when: always` inclusions.
+- **YAML anchor scope**: Anchors defined in `rules.gitlab-ci.yml` are available in files that `include:` it (like
+  `rails/shared.gitlab-ci.yml`), but NOT in files included via the top-level wildcard. Top-level files use `!reference`
+  instead.
+- **`!reference` vs YAML anchors**: Use `!reference [".some-key", rules]` to reference keys across files included at the
+  same level. YAML anchors (`*anchor`) only work within the same file or direct includes.
