@@ -37,6 +37,11 @@ The codebase follows a simple architecture:
 
 - Test projects in `tests/` directory organized by type (e.g. `tests/simple-ktor-api/`, `tests/simple-ktor-client/`)
 
+## Tool Version Management
+
+All tools in `mise.toml` must use pinned versions (e.g. `actionlint = "1.7.12"`). Never use `latest` or
+other floating references. When adding a new tool, look up the current stable version and pin it explicitly.
+
 ## Build & Test Commands
 
 This project uses the [Kotlin Toolchain](https://kotlin-toolchain.org/latest/) CLI (`./kotlin`), installed automatically
