@@ -14,4 +14,9 @@ lint:
     - !reference [".if-merge-request", rules]
     - !reference [".if-default-branch", rules]
   script:
-    - mise run pre-commit:run -- "$CI_MERGE_REQUEST_DIFF_BASE_SHA" "$CI_COMMIT_SHA"
+    - |
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        mise run pre-commit:run -- "$CI_MERGE_REQUEST_DIFF_BASE_SHA" "$CI_COMMIT_SHA"
+      else
+        mise run pre-commit:run
+      fi
