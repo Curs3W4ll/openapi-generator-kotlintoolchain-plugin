@@ -6,7 +6,7 @@ mr-title:
   image: alpine:3.21
   extends:
     - .default-retry
-    - .default-interruptible
+    - .interruptible
   rules:
     - !reference [".if-merge-request", rules]
   variables:

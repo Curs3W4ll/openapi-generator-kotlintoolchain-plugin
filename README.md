@@ -9,17 +9,6 @@ automatically registers the produced Kotlin sources as a source set — no manua
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![GitLab](https://img.shields.io/badge/source-GitLab-orange.svg)](https://gitlab.com/curs3_w4ll/openapi-generator-kotlintoolchain-plugin)
 
-## Requirements
-
-### Dependencies
-
-- **[Mise](https://mise.jdx.dev/installing-mise.html#homebrew)**
-
-Mise will then install the multiple tools automatically.  
-See the `[tools]` table header in `mise.toml` for more details.
-
-To see the available mise tasks, use the `mise run` command.
-
 ## Contributing
 
 Contributions are welcome!

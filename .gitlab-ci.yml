@@ -4,6 +4,22 @@ stages:
   - lint
   - build
   - check
+  - release
+
+# Variables exposed in the "Run pipeline" UI with descriptions and defaults.
+# Only used by the release pipeline; harmless for MR / default-branch runs.
+variables:
+  RELEASE:
+    value: "false"
+    description: "Set to 'true' to trigger the release pipeline (default branch only)."
+    options:
+      - "false"
+      - "true"
+  VERSION:
+    value: ""
+    description: >-
+      Optional explicit version (e.g. 1.2.3). Leave empty to auto-bump
+      from conventional commits via git-cliff (recommended).
 
 workflow:
   auto_cancel:
@@ -11,6 +27,9 @@ workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $RELEASE == "true" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+      variables:
+        PIPELINE_NAME: 'Release pipeline'
 
 include:
   - local: .gitlab/ci/*.gitlab-ci.yml

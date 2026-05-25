@@ -32,8 +32,11 @@ variables:
       - stuck_or_timeout_failure
       - scheduler_failure
 
-.default-interruptible:
+.interruptible:
   interruptible: true
+
+.not-interruptible:
+  interruptible: false
 
 .default-before_script:
   before_script:

@@ -1,0 +1,68 @@
+---
+
+# Release pipeline. Triggered manually from the GitLab UI on the default branch
+# with the variable RELEASE=true. Optional VERSION variable overrides the
+# auto-bumped version.
+
+release-prepare:
+  stage: release
+  needs:
+    - job: build
+      artifacts: false
+    - job: check
+      artifacts: false
+  extends:
+    - .default-retry
+    - .default-before_script
+    - .not-interruptible
+  rules:
+    - !reference [".if-release", rules]
+  cache:
+    - !reference [".mise-cache", cache]
+  variables:
+    # Full git history is required for git-cliff to compute the changelog
+    # and the next version.
+    GIT_DEPTH: "0"
+  script:
+    - |
+      set -euo pipefail
+
+      if [ -n "${VERSION:-}" ]; then
+        TAG="${VERSION}"
+      else
+        TAG="$(git cliff --bumped-version)"
+      fi
+      echo "Releasing ${TAG}"
+
+      if git rev-parse "${TAG}" >/dev/null 2>&1; then
+        echo "ERROR: tag ${TAG} already exists." >&2
+        exit 1
+      fi
+
+      git cliff --tag "${TAG}" --unreleased --strip all --output RELEASE_NOTES.md
+
+      echo "TAG=${TAG}" > release.env
+  artifacts:
+    paths:
+      - RELEASE_NOTES.md
+    reports:
+      dotenv: release.env
+
+release-publish:
+  stage: release
+  needs:
+    - job: release-prepare
+      artifacts: true
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  extends:
+    - .default-retry
+    - .not-interruptible
+  rules:
+    - !reference [".if-release", rules]
+  script:
+    - echo "Publishing GitLab release ${TAG}"
+  release:
+    tag_name: "${TAG}"
+    ref: "${CI_COMMIT_SHA}"
+    name: "Release ${TAG}"
+    description: "./RELEASE_NOTES.md"

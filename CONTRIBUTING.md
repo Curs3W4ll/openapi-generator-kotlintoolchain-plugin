@@ -27,15 +27,13 @@ template. Describe the problem you're trying to solve and your proposed solution
 
 ## Development Setup
 
-- The build system is [Kotlin Toolchain](https://kotlin-toolchain.org/latest/) — no Gradle or Maven needed.
-- Use the `./kotlin` executable to configure the project. It will automatically download and use a compatible JDK for
-  you.
+See [docs/development.md](docs/development.md).
 
 ## Commit Messages
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-```
+```text
 <type>(<scope>): <short description>
 ```
 
@@ -43,7 +41,7 @@ Common types: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`.
 
 Examples:
 
-```
+```text
 feat(plugin): Add globalProperties support
 fix(generate): Skip test file generation by default
 docs: Update README usage section

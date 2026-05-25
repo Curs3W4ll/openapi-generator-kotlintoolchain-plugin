@@ -1,0 +1,40 @@
+---
+
+# This workflow does not cut a release on its own. Releases are produced by the
+# GitLab pipeline (see docs/release.md); the tag is mirrored to GitHub and this
+# workflow's job is purely to materialize the matching GitHub release entry so
+# the two hosts stay in sync.
+
+name: Sync Release
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate release notes
+        id: cliff
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --latest --strip all
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: Release ${{ github.ref_name }}
+          body: ${{ steps.cliff.outputs.content }}
