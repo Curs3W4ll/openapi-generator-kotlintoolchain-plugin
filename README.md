@@ -9,6 +9,77 @@ automatically registers the produced Kotlin sources as a source set — no manua
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![GitLab](https://img.shields.io/badge/source-GitLab-orange.svg)](https://gitlab.com/curs3_w4ll/openapi-generator-kotlintoolchain-plugin)
 
+## Installation
+
+:warning: The Kotlin Toolchain does not yet have a plugin registry. Until then, the recommended way to consume this
+plugin is via a **git submodule**.
+
+### 1. Add the submodule
+
+```sh
+git submodule add git@gitlab.com:curs3_w4ll/openapi-generator-kotlintoolchain-plugin.git openapi-generator-plugin
+```
+
+### 2. Register the plugin in `project.yaml`
+
+```yaml
+plugins:
+  - ./openapi-generator-plugin/plugin-core
+```
+
+## Usage
+
+### Enable the plugin in `module.yaml`
+
+```yaml
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/openapi/api.yml"
+```
+
+| Setting         | Required | Description                                                       |
+|-----------------|----------|-------------------------------------------------------------------|
+| `enabled`       | yes      | Activates the plugin for this module.                             |
+| `generatorName` | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …). |
+| `inputSpec`     | yes      | Path to the OpenAPI spec file, relative to the module root.       |
+
+### Run the generator
+
+```sh
+./kotlin run generateOpenAPI
+```
+
+The generated sources are automatically registered as a source set — no extra wiring needed. A normal build also
+triggers generation:
+
+```sh
+./kotlin build
+```
+
+### Use the generated code
+
+The generated package root follows the OpenAPI Generator convention for the chosen target. For the `kotlin` generator:
+
+```kotlin
+import org.openapitools.client.apis.DefaultApi
+
+fun main() {
+  val api = DefaultApi()
+  val result = api.getSomething(id = 1)
+  println(result)
+}
+```
+
+Add the runtime dependencies required by the generator to `module.yaml`. For the `kotlin` generator:
+
+```yaml
+dependencies:
+  - com.squareup.okhttp3:okhttp:4.12.0
+  - com.squareup.moshi:moshi-kotlin:1.15.2
+```
+
 ## Contributing
 
 Contributions are welcome!
