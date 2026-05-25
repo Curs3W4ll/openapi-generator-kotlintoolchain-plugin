@@ -8,6 +8,7 @@ Load the following instruction files based on your current task:
 
 - When working with git, commits, or branches: Read [.ai/git.md](.ai/git.md)
 - When working with merge requests: Read [.ai/merge-requests.md](.ai/merge-requests.md)
+- When working with issues: Read [.ai/issues.md](.ai/issues.md)
 - When working with CI/CD pipelines or .gitlab-ci.yml: Read [.ai/ci-cd.md](.ai/ci-cd.md)
 
 ## Code Architecture
