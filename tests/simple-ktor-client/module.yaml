@@ -18,7 +18,7 @@ settings:
       version: 21
       distributions: [corretto]
       selectionMode: javaHome
-    mainClass: test.simple.ktor.client.ApplicationKt
+    mainClass: simple.ktor.client.ApplicationKt
   kotlin:
     version: 2.3.20
 

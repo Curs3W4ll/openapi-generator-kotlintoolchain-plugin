@@ -11,6 +11,10 @@ Load the following instruction files based on your current task:
 - When working with issues: Read [.ai/issues.md](.ai/issues.md)
 - When working with CI/CD pipelines or .gitlab-ci.yml: Read [.ai/ci-cd.md](.ai/ci-cd.md)
 
+### Local Overrides
+
+Read [AGENTS.local.md](AGENTS.local.md)
+
 ## Code Architecture
 
 ### High-Level Structure
@@ -40,6 +44,10 @@ The codebase follows a simple architecture:
 ### Test Structure
 
 - Test projects in `tests/` directory organized by type (e.g. `tests/simple-ktor-api/`, `tests/simple-ktor-client/`)
+- Each `tests/*` project carries its own `test/` source set (Amper convention) with at least one `kotlin.test` class
+  that exercises the generated API — providing both compile-time and runtime validation of the plugin output
+- Main application code lives in `src/` under a non-`test`-prefixed package (e.g. `simple.ktor.client`)
+- Run `./kotlin check` to execute all test source sets across every module
 
 ## Tool Version Management
 

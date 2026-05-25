@@ -1,4 +1,4 @@
-package test.simple.ktor.client
+package simple.ktor.client
 
 import org.openapitools.client.apis.DefaultApi
 

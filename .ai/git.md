@@ -12,6 +12,14 @@ Use this pattern unless a different name is specified: `<issue-number>-<descript
 
 Do not use 40-character hexadecimal strings (these conflict with Git commit hashes).
 
+## Branch base
+
+Always create new branches from the latest `main` unless a different base is
+explicitly specified or the current branch is already the correct base.
+
+Before branching, run `git checkout main && git pull` to ensure the local
+`main` is up to date.
+
 ## Commit message rules
 
 ### Conventional Commits (REQUIRED)
