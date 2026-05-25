@@ -1,0 +1,12 @@
+---
+tasks:
+  generateOpenAPI:
+    action: !io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.openApiGenerate
+      inputSpec: ${module.rootDir}/${pluginSettings.inputSpec}
+      outputDir: ${taskOutputDir}
+      generatorName: ${pluginSettings.generatorName}
+
+generated:
+  sources:
+    - language: kotlin
+      directory: ${tasks.generateOpenAPI.action.outputDir}

@@ -1,0 +1,15 @@
+---
+product: jvm/amper-plugin
+
+dependencies:
+  - $libs.openapi.generator.core
+
+pluginInfo:
+  id: openapi-generator
+  settingsClass: io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.settings.Settings
+
+description: |
+  Integrates [OpenAPI Generator](https://openapi-generator.tech/) into the Kotlin Toolchain build pipeline.
+  Exposes a `generateOpenAPI` task that reads an OpenAPI specification file and
+  runs the configured generator to produce source code,
+  which is then automatically registered as a Kotlin source set.

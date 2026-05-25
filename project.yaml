@@ -1,0 +1,7 @@
+---
+modules:
+  - ./plugin-core
+  - ./tests/*
+
+plugins:
+  - ./plugin-core
