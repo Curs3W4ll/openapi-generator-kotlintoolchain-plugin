@@ -1,0 +1,5 @@
+[hooks]
+enter = [
+    "mise i -q",
+    { task = "pre-commit:setup" },
+]

@@ -10,6 +10,7 @@ Load the following instruction files based on your current task:
 - When working with merge requests: Read [.ai/merge-requests.md](.ai/merge-requests.md)
 - When working with issues: Read [.ai/issues.md](.ai/issues.md)
 - When working with CI/CD pipelines or .gitlab-ci.yml: Read [.ai/ci-cd.md](.ai/ci-cd.md)
+- When working with mise, tools, or task definitions: Read [.ai/mise.md](.ai/mise.md)
 
 ### Local Overrides
 
@@ -34,10 +35,8 @@ The codebase follows a simple architecture:
 
 **Configuration System:**
 
-- `mise.toml` - Mise tool versions, env vars, and hooks. Task definitions live in topical files under `.mise/*.toml`
-  (e.g. `.mise/pre-commit.toml` groups every pre-commit-related task) and are loaded via the `[task_config] includes`
-  array. When adding a new task, put it in (or create) the topical file that fits its domain rather than appending to
-  `mise.toml`, and register the file in `includes` if it is new.
+- `mise.toml` / `mise.dev.toml` / `.miserc.toml` - See [.ai/mise.md](.ai/mise.md) for the full mise configuration
+  guide (profiles, tool placement, task organisation).
 - `project.yaml` - Root Kotlin Toolchain configuration. This repository uses the Kotlin Toolchain as a multi-module
   orchestrator tool
 
@@ -48,11 +47,6 @@ The codebase follows a simple architecture:
   that exercises the generated API — providing both compile-time and runtime validation of the plugin output
 - Main application code lives in `src/` under a non-`test`-prefixed package (e.g. `simple.ktor.client`)
 - Run `./kotlin check` to execute all test source sets across every module
-
-## Tool Version Management
-
-All tools in `mise.toml` must use pinned versions (e.g. `actionlint = "1.7.12"`). Never use `latest` or
-other floating references. When adding a new tool, look up the current stable version and pin it explicitly.
 
 ## Build & Test Commands
 

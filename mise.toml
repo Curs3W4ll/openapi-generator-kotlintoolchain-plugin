@@ -10,12 +10,6 @@ pipx = "1.12.0"
 [settings]
 experimental = true
 
-[hooks]
-enter = [
-    "mise i -q",
-    { task = "pre-commit:setup" },
-]
-
 [task_config]
 includes = [
     ".mise/pre-commit.toml",
