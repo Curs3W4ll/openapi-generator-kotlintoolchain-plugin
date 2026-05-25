@@ -6,6 +6,7 @@ lint:
   extends:
     - .default-retry
     - .default-before_script
+    - .default-interruptible
   cache:
     - !reference [".mise-cache", cache]
     - !reference [".pre-commit-cache", cache]

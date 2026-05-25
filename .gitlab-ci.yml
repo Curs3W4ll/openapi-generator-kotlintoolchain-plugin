@@ -6,6 +6,8 @@ stages:
   - check
 
 workflow:
+  auto_cancel:
+    on_new_commit: interruptible
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'

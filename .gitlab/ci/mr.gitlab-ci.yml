@@ -4,7 +4,9 @@ mr-title:
   stage: lint
   needs: []
   image: alpine:3.21
-  extends: .default-retry
+  extends:
+    - .default-retry
+    - .default-interruptible
   rules:
     - !reference [".if-merge-request", rules]
   variables:

@@ -31,6 +31,9 @@ variables:
       - stuck_or_timeout_failure
       - scheduler_failure
 
+.default-interruptible:
+  interruptible: true
+
 .default-before_script:
   before_script:
     - mise trust --yes
