@@ -12,5 +12,6 @@ lint:
     - !reference [".pre-commit-cache", cache]
   rules:
     - !reference [".if-merge-request", rules]
+    - !reference [".if-default-branch", rules]
   script:
     - mise run pre-commit:run -- "$CI_MERGE_REQUEST_DIFF_BASE_SHA" "$CI_COMMIT_SHA"

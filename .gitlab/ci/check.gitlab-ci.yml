@@ -14,5 +14,6 @@ check:
     - !reference [".kotlin-cache", cache]
   rules:
     - !reference [".if-merge-request", rules]
+    - !reference [".if-default-branch", rules]
   script:
     - ./kotlin check
