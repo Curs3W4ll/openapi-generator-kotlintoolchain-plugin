@@ -30,7 +30,10 @@ The codebase follows a simple architecture:
 
 **Configuration System:**
 
-- `mise.toml` - Mise configuration for tools, tasks, and env vars management used while dev
+- `mise.toml` - Mise tool versions, env vars, and hooks. Task definitions live in topical files under `.mise/*.toml`
+  (e.g. `.mise/pre-commit.toml` groups every pre-commit-related task) and are loaded via the `[task_config] includes`
+  array. When adding a new task, put it in (or create) the topical file that fits its domain rather than appending to
+  `mise.toml`, and register the file in `includes` if it is new.
 - `project.yaml` - Root Kotlin Toolchain configuration. This repository uses the Kotlin Toolchain as a multi-module
   orchestrator tool
 

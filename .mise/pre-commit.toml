@@ -1,0 +1,14 @@
+["pre-commit:setup"]
+description = "Setup Git hooks with pre-commit"
+run = "pre-commit install"
+sources = [".pre-commit-config.yaml"]
+
+["pre-commit:run"]
+description = "Run pre-commit linters on the diff between two refs (defaults: origin/main..HEAD)"
+usage = '''
+arg <from> help="Base git ref" default="origin/main"
+arg <to> help="Tip git ref" default="HEAD"
+'''
+run = '''
+pre-commit run --show-diff-on-failure --from-ref="{{ usage.from }}" --to-ref="{{ usage.to }}"
+'''

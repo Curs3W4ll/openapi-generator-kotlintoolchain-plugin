@@ -1,0 +1,17 @@
+---
+
+check:
+  stage: check
+  needs:
+    - job: build
+      artifacts: false
+  extends:
+    - .default-retry
+    - .default-before_script
+  cache:
+    - !reference [".mise-cache", cache]
+    - !reference [".kotlin-cache", cache]
+  rules:
+    - !reference [".if-merge-request", rules]
+  script:
+    - ./kotlin check

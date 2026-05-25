@@ -1,0 +1,70 @@
+---
+
+# Shared foundations for all jobs in this pipeline.
+# Hidden jobs (keys prefixed with `.`) defined here are referenced from
+# sibling files via `!reference [...]` or `extends:` because YAML anchors
+# do not cross the wildcard include in .gitlab-ci.yml.
+
+default:
+  # entrypoint: [""] overrides the image's ENTRYPOINT ["mise"], otherwise GitLab
+  # Runner's job shell would launch as `mise -c <script>` and mise would reject
+  # the unknown `-c` flag before our script runs.
+  image:
+    name: jdxcode/mise:2026.5.15
+    entrypoint: [""]
+
+variables:
+  MISE_DATA_DIR: $CI_PROJECT_DIR/.mise-data
+  MISE_YES: "1"
+  PRE_COMMIT_HOME: $CI_PROJECT_DIR/.pre-commit-data
+  # Undocumented Kotlin Toolchain env var (equivalent to --shared-cache-dir).
+  # yamllint disable-line rule:line-length
+  # Source: https://github.com/JetBrains/kotlin-toolchain/blob/main/sources/core/src/org/jetbrains/amper/core/AmperUserCacheRoot.kt#L75C28-L75C51.
+  # On Linux, XDG_CACHE_HOME is also honored as a lower-priority fallback.
+  KOTLIN_SHARED_CACHE_DIR: $CI_PROJECT_DIR/.kotlin-shared-cache
+
+.default-retry:
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+      - scheduler_failure
+
+.default-before_script:
+  before_script:
+    - mise trust --yes
+    - mise install
+    # Activate mise's managed env (JAVA_HOME, PATH with all installed tools)
+    # into the shell so subsequent script lines can call tools directly
+    # without a `mise exec --` prefix.
+    - eval "$(mise env -s bash)"
+
+.mise-cache:
+  cache:
+    key:
+      files:
+        - mise.toml
+    paths:
+      - $MISE_DATA_DIR/
+    policy: pull-push
+
+.pre-commit-cache:
+  cache:
+    key:
+      files:
+        - .pre-commit-config.yaml
+    paths:
+      - $PRE_COMMIT_HOME/
+    policy: pull-push
+
+.kotlin-cache:
+  cache:
+    key:
+      files:
+        - libs.versions.toml
+        - project.yaml
+    paths:
+      - $KOTLIN_SHARED_CACHE_DIR/
+      - build/
+    policy: pull-push

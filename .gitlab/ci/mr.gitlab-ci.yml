@@ -1,0 +1,28 @@
+---
+
+mr-title:
+  stage: lint
+  needs: []
+  image: alpine:3.21
+  extends: .default-retry
+  rules:
+    - !reference [".if-merge-request", rules]
+  variables:
+    TITLE_REGEX: '^(feat|fix|refactor|docs|style|perf|test|chore|security)(\([a-zA-Z0-9_-]+\))?: [A-Z].{2,71} #[0-9]+$'
+  script:
+    - |
+      echo "MR title: $CI_MERGE_REQUEST_TITLE"
+      if echo "$CI_MERGE_REQUEST_TITLE" | grep -Eq "$TITLE_REGEX"; then
+        echo "OK: MR title matches conventional commit format."
+      else
+        echo
+        echo "ERROR: MR title does not match the required format."
+        echo "Expected: <type>(<scope>): <Description> #<issue-number>"
+        echo "  - <type>        one of: feat, fix, refactor, docs, style, perf, test, chore, security"
+        echo "  - <scope>       optional, lowercase identifier in parentheses (e.g. (gitlab), (generateOpenAPI))"
+        echo "  - <Description> starts with a capital letter, 3 to 72 characters, no trailing period"
+        echo "  - <issue-number> trailing reference like #7"
+        echo
+        echo "See .ai/git.md and .ai/merge-requests.md for the full rules."
+        exit 1
+      fi

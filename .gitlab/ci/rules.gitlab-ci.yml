@@ -1,0 +1,9 @@
+---
+
+# Centralized condition anchors for all jobs in this pipeline.
+# Jobs reference these via `!reference [".some-key", rules]` because YAML
+# anchors do not cross the wildcard include in .gitlab-ci.yml.
+
+.if-merge-request:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

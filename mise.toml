@@ -16,7 +16,7 @@ enter = [
     { task = "pre-commit:setup" },
 ]
 
-[tasks."pre-commit:setup"]
-description = "Setup Git hooks with pre-commit"
-run = "pre-commit install"
-sources = [".pre-commit-config.yaml"]
+[task_config]
+includes = [
+    ".mise/pre-commit.toml",
+]

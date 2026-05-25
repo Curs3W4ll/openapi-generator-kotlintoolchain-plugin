@@ -8,7 +8,7 @@ The CI/CD configuration spans different YAML files across `.gitlab-ci.yml` and `
 
 ## Directory Structure
 
-```
+```text
 .gitlab-ci.yml                    # Entry point: stages, workflow rules, global variables, includes
 .gitlab/ci/
   version.yml                     # Pinned tool versions (Ruby, Go, Node, Chrome, etc.)
@@ -88,6 +88,24 @@ rspec unit pg17:
     - .rspec-unit-parallel
 ```
 
+## Job Dependencies (DAG)
+
+Stages in this project exist purely for **visual grouping** in the GitLab pipeline UI — they have no effect on
+execution order. Every job declares its real dependencies via `needs:`, and the actual execution timeline is the DAG
+formed by those declarations.
+
+Rules:
+
+- Every job MUST declare a `needs:` key, even when empty. Never rely on implicit stage-by-stage ordering.
+- `needs: []` — for jobs with no upstream dependency. They start at t=0 alongside every other `needs: []` job,
+  regardless of which stage they sit in.
+- `needs: [{job: <name>, artifacts: false}]` — for jobs that depend on another job's completion (e.g. to reuse the
+  cache it just pushed). Pass `artifacts: false` when you only care about completion and don't need the upstream
+  job's artifact bundle — it skips the artifact upload/download dance.
+
+Because of this, a new job can be placed in whichever stage fits it semantically (for UI clarity) without that
+choice affecting when it runs. Adding a job and forgetting `needs:` is a bug, not a shortcut.
+
 ## Shared Foundations
 
 ### `global.gitlab-ci.yml`
@@ -126,14 +144,18 @@ Key pipeline types:
    wildcard).
 2. Define rules in `rules.gitlab-ci.yml` using existing condition anchors and file patterns.
 3. Extend shared foundations (`.default-retry`, `.default-before_script`, service mixins).
+4. Declare `needs:` explicitly (see [Job Dependencies (DAG)](#job-dependencies-dag)). Use `needs: []` if there is no
+   upstream dependency. Stage choice is for UI grouping only and must not be relied on for ordering.
 
 ### Add file-change patterns for a new area
 
 1. In `rules.gitlab-ci.yml`, add a new pattern anchor:
+
    ```yaml
    .my-new-patterns: &my-new-patterns
      - "path/to/files/**/*"
    ```
+
 2. Create composite rules that use the pattern with appropriate conditions.
 
 ## External Dependencies

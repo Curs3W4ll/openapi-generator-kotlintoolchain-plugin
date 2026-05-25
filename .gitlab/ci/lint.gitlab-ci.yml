@@ -1,0 +1,15 @@
+---
+
+lint:
+  stage: lint
+  needs: []
+  extends:
+    - .default-retry
+    - .default-before_script
+  cache:
+    - !reference [".mise-cache", cache]
+    - !reference [".pre-commit-cache", cache]
+  rules:
+    - !reference [".if-merge-request", rules]
+  script:
+    - mise run pre-commit:run -- "$CI_MERGE_REQUEST_DIFF_BASE_SHA" "$CI_COMMIT_SHA"
