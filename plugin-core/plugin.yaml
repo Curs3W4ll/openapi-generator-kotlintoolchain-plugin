@@ -5,6 +5,8 @@ tasks:
       inputSpec: ${module.rootDir}/${pluginSettings.inputSpec}
       outputDir: ${taskOutputDir}
       generatorName: ${pluginSettings.generatorName}
+      verbose: ${pluginSettings.verbose}
+      logToStderr: ${pluginSettings.logToStderr}
 
 generated:
   sources:

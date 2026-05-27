@@ -14,6 +14,8 @@ fun openApiGenerate(
     @Input inputSpec: Path,
     @Output outputDir: Path,
     generatorName: String,
+    verbose: Boolean?,
+    logToStderr: Boolean?,
 ) {
     if (!inputSpec.isRegularFile()) {
         error("The input spec $inputSpec does not exist or is corrupted")
@@ -30,6 +32,8 @@ fun openApiGenerate(
             setOutputDir(outputDir.toString())
             addGlobalProperty("apiTests", "false")
             addGlobalProperty("modelTests", "false")
+            setVerbose(verbose ?: false)
+            setLogToStderr(logToStderr ?: false)
         }
     DefaultGenerator().opts(cfg.toClientOptInput()).generate()
 }

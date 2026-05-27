@@ -13,4 +13,14 @@ interface Settings {
      * The name of the generator which will handle codegen.
      */
     val generatorName: String
+
+    /**
+     * Enable verbose logging from the generator. Default: false.
+     */
+    val verbose: Boolean?
+
+    /**
+     * Write all generator log messages to stderr instead of stdout. Default: false.
+     */
+    val logToStderr: Boolean?
 }
