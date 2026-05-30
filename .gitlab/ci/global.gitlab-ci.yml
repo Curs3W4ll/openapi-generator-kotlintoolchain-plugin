@@ -23,6 +23,11 @@ variables:
   # Source: https://github.com/JetBrains/kotlin-toolchain/blob/main/sources/core/src/org/jetbrains/amper/core/AmperUserCacheRoot.kt#L75C28-L75C51.
   # On Linux, XDG_CACHE_HOME is also honored as a lower-priority fallback.
   KOTLIN_SHARED_CACHE_DIR: $CI_PROJECT_DIR/.kotlin-shared-cache
+  # Redirect the Kotlin CLI bootstrap cache (distribution + JRE) into the project
+  # directory so GitLab CI can cache it. Without this, the bootstrap cache lands in
+  # $HOME/.cache/... which is outside CI_PROJECT_DIR and never persisted.
+  # Documented in the ./kotlin wrapper script header.
+  KOTLIN_CLI_BOOTSTRAP_CACHE_DIR: $CI_PROJECT_DIR/.kotlin-cli-cache
 
 .default-retry:
   retry:
@@ -72,6 +77,7 @@ variables:
         - libs.versions.toml
         - project.yaml
     paths:
+      - $KOTLIN_CLI_BOOTSTRAP_CACHE_DIR/
       - $KOTLIN_SHARED_CACHE_DIR/
       - build/
     policy: pull-push
