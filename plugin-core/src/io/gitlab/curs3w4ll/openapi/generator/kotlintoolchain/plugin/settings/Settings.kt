@@ -83,4 +83,10 @@ interface Settings {
    * Artifact version written into generated build scripts.
    */
   val version: String?
+
+  /**
+   * Sub-template (library) to use with the selected generator.
+   * Available values depend on the chosen generatorName (e.g. jvm-ktor, jvm-okhttp4 for kotlin).
+   */
+  val library: String?
 }

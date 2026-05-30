@@ -58,6 +58,7 @@ plugins:
 | `groupId`         | no       | GroupId written into generated build scripts (e.g. `pom.xml`, `build.gradle`).            |
 | `id`              | no       | ArtifactId written into generated build scripts.                                          |
 | `version`         | no       | Artifact version written into generated build scripts.                                    |
+| `library`         | no       | Sub-template to use with the selected generator (e.g. `jvm-ktor`, `jvm-okhttp4` for `kotlin`). |
 
 ### Run the generator
 

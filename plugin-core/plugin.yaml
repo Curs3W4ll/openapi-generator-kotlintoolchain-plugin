@@ -19,6 +19,7 @@ tasks:
       groupId: ${pluginSettings.groupId}
       id: ${pluginSettings.id}
       version: ${pluginSettings.version}
+      library: ${pluginSettings.library}
 
 generated:
   sources:

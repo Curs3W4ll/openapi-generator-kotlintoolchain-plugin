@@ -28,6 +28,7 @@ fun openApiGenerate(
   groupId: String?,
   id: String?,
   version: String?,
+  library: String?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -57,6 +58,7 @@ fun openApiGenerate(
       groupId?.let { setGroupId(it) }
       id?.let { setArtifactId(it) }
       version?.let { setArtifactVersion(it) }
+      library?.let { setLibrary(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }
