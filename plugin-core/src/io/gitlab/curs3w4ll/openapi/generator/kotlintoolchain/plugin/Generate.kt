@@ -29,6 +29,10 @@ fun openApiGenerate(
   id: String?,
   version: String?,
   library: String?,
+  gitHost: String?,
+  gitUserId: String?,
+  gitRepoId: String?,
+  releaseNote: String?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -59,6 +63,10 @@ fun openApiGenerate(
       id?.let { setArtifactId(it) }
       version?.let { setArtifactVersion(it) }
       library?.let { setLibrary(it) }
+      gitHost?.let { setGitHost(it) }
+      gitUserId?.let { setGitUserId(it) }
+      gitRepoId?.let { setGitRepoId(it) }
+      releaseNote?.let { setReleaseNote(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

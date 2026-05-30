@@ -20,6 +20,10 @@ tasks:
       id: ${pluginSettings.id}
       version: ${pluginSettings.version}
       library: ${pluginSettings.library}
+      gitHost: ${pluginSettings.gitHost}
+      gitUserId: ${pluginSettings.gitUserId}
+      gitRepoId: ${pluginSettings.gitRepoId}
+      releaseNote: ${pluginSettings.releaseNote}
 
 generated:
   sources:

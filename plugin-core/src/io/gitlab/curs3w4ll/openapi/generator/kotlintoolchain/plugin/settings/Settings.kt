@@ -89,4 +89,24 @@ interface Settings {
    * Available values depend on the chosen generatorName (e.g. jvm-ktor, jvm-okhttp4 for kotlin).
    */
   val library: String?
+
+  /**
+   * Git host (e.g. `gitlab.com`, `github.com`). Included in generated repository URLs and scripts.
+   */
+  val gitHost: String?
+
+  /**
+   * Git user or organization name. Included in generated repository URLs and scripts.
+   */
+  val gitUserId: String?
+
+  /**
+   * Git repository name. Included in generated repository URLs and scripts.
+   */
+  val gitRepoId: String?
+
+  /**
+   * Release note text embedded in generated changelogs and scripts.
+   */
+  val releaseNote: String?
 }

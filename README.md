@@ -59,6 +59,10 @@ plugins:
 | `id`              | no       | ArtifactId written into generated build scripts.                                          |
 | `version`         | no       | Artifact version written into generated build scripts.                                    |
 | `library`         | no       | Sub-template to use with the selected generator (e.g. `jvm-ktor`, `jvm-okhttp4` for `kotlin`). |
+| `gitHost`         | no       | Git host (e.g. `gitlab.com`, `github.com`). Included in generated repository URLs and scripts.  |
+| `gitUserId`       | no       | Git user or organisation name. Included in generated repository URLs and scripts.               |
+| `gitRepoId`       | no       | Git repository name. Included in generated repository URLs and scripts.                         |
+| `releaseNote`     | no       | Release note text embedded in generated changelogs and scripts.                                 |
 
 ### Run the generator
 
