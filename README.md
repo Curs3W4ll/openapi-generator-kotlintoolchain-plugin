@@ -39,11 +39,14 @@ plugins:
     inputSpec: "resources/openapi/api.yml"
 ```
 
-| Setting         | Required | Description                                                       |
-|-----------------|----------|-------------------------------------------------------------------|
-| `enabled`       | yes      | Activates the plugin for this module.                             |
-| `generatorName` | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …). |
-| `inputSpec`     | yes      | Path to the OpenAPI spec file, relative to the module root.       |
+| Setting         | Required | Description                                                              |
+|-----------------|----------|--------------------------------------------------------------------------|
+| `enabled`       | yes      | Activates the plugin for this module.                                    |
+| `generatorName` | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …).        |
+| `inputSpec`     | yes      | Path to the OpenAPI spec file, relative to the module root.              |
+| `verbose`       | no       | Enable verbose logging from the generator. Default: `false`.             |
+| `logToStderr`   | no       | Write all log messages to stderr instead of stdout. Default: `false`.    |
+| `dryRun`        | no       | Run the generator without writing any files to disk. Default: `false`.   |
 
 ### Run the generator
 

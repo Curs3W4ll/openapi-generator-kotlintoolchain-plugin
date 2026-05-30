@@ -11,3 +11,7 @@ request.
 ## Labels
 
 Always add at least one label when creating an issue. Labels are required to categorize and filter issues effectively.
+
+Use the `enhancement` label only for user-facing feature changes — changes that affect how the plugin user configures or
+uses the plugin. If a change doesn't affect the plugin user (e.g. internal refactoring, tooling, CI/CD), use the
+`internal` label instead.

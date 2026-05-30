@@ -95,6 +95,11 @@ Common concern boundaries:
 These are not mechanical rules — use judgment. The test: could this commit be reverted independently without breaking
 the others? If not, it should probably be split further.
 
+## Documentation requirements
+
+When a commit adds a new user-facing feature or setting, the README must be updated to document it in the same commit.
+Do not skip or defer this step — documentation is part of the feature, not an afterthought.
+
 ## Pre-commit process
 
 This project uses pre-commit to ensure committed code is good enough.

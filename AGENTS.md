@@ -47,6 +47,8 @@ The codebase follows a simple architecture:
   that exercises the generated API — providing both compile-time and runtime validation of the plugin output
 - Main application code lives in `src/` under a non-`test`-prefixed package (e.g. `simple.ktor.client`)
 - Run `./kotlin check` to execute all test source sets across every module
+- Tests must validate the newly added feature — a test that always passes regardless of whether the feature behaves
+  correctly is not acceptable. When adding a feature, write a test that would fail if the feature were broken or absent.
 
 ## Build & Test Commands
 
