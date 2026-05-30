@@ -51,7 +51,10 @@ plugins:
 | `packageName`    | no       | Default package for all generated classes when more specific packages are not set.        |
 | `apiPackage`     | no       | Package for generated API interface/implementation classes.                               |
 | `modelPackage`   | no       | Package for generated model/DTO classes.                                                  |
-| `invokerPackage` | no       | Root/invoker package used by some generators as the top-level namespace.                  |
+| `invokerPackage`  | no       | Root/invoker package used by some generators as the top-level namespace.                  |
+| `modelNamePrefix` | no       | Prefix prepended to every generated model class name.                                     |
+| `modelNameSuffix` | no       | Suffix appended to every generated model class name.                                      |
+| `apiNameSuffix`   | no       | Suffix appended to every generated API class/interface name.                              |
 
 ### Run the generator
 

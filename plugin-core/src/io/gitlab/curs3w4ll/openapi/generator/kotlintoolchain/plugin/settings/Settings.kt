@@ -53,4 +53,19 @@ interface Settings {
    * Root/invoker package used by some generators as the top-level namespace.
    */
   val invokerPackage: String?
+
+  /**
+   * Prefix prepended to every generated model class name.
+   */
+  val modelNamePrefix: String?
+
+  /**
+   * Suffix appended to every generated model class name.
+   */
+  val modelNameSuffix: String?
+
+  /**
+   * Suffix appended to every generated API class/interface name.
+   */
+  val apiNameSuffix: String?
 }

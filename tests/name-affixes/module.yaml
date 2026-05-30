@@ -1,0 +1,26 @@
+---
+product: jvm/app
+
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/openapi/test-api.yml"
+    packageName: nameaffixes.test
+    modelNamePrefix: "Pfx"
+    modelNameSuffix: "Model"
+
+dependencies:
+  - com.squareup.okhttp3:okhttp:4.12.0
+  - com.squareup.moshi:moshi-kotlin:1.15.2
+
+settings:
+  jvm:
+    jdk:
+      version: 21
+      distributions: [corretto]
+    mainClass: nameaffixes.ApplicationKt
+  kotlin:
+    version: 2.3.20
+
+description: Test project to verify modelNamePrefix and modelNameSuffix settings

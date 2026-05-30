@@ -13,6 +13,9 @@ tasks:
       apiPackage: ${pluginSettings.apiPackage}
       modelPackage: ${pluginSettings.modelPackage}
       invokerPackage: ${pluginSettings.invokerPackage}
+      modelNamePrefix: ${pluginSettings.modelNamePrefix}
+      modelNameSuffix: ${pluginSettings.modelNameSuffix}
+      apiNameSuffix: ${pluginSettings.apiNameSuffix}
 
 generated:
   sources:
