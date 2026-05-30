@@ -11,29 +11,30 @@ import kotlin.io.path.isRegularFile
 
 @TaskAction
 fun openApiGenerate(
-    @Input inputSpec: Path,
-    @Output outputDir: Path,
-    generatorName: String,
-    verbose: Boolean?,
-    logToStderr: Boolean?,
+  @Input inputSpec: Path,
+  @Output outputDir: Path,
+  generatorName: String,
+  verbose: Boolean?,
+  logToStderr: Boolean?,
+  dryRun: Boolean?,
 ) {
-    if (!inputSpec.isRegularFile()) {
-        error("The input spec $inputSpec does not exist or is corrupted")
+  if (!inputSpec.isRegularFile()) {
+    error("The input spec $inputSpec does not exist or is corrupted")
+  }
+
+  println("Generating files")
+
+  outputDir.createDirectories()
+
+  val cfg =
+    CodegenConfigurator().apply {
+      setGeneratorName(generatorName)
+      setInputSpec(inputSpec.toString())
+      setOutputDir(outputDir.toString())
+      addGlobalProperty("apiTests", "false")
+      addGlobalProperty("modelTests", "false")
+      setVerbose(verbose ?: false)
+      setLogToStderr(logToStderr ?: false)
     }
-
-    println("Generating files")
-
-    outputDir.createDirectories()
-
-    val cfg =
-        CodegenConfigurator().apply {
-            setGeneratorName(generatorName)
-            setInputSpec(inputSpec.toString())
-            setOutputDir(outputDir.toString())
-            addGlobalProperty("apiTests", "false")
-            addGlobalProperty("modelTests", "false")
-            setVerbose(verbose ?: false)
-            setLogToStderr(logToStderr ?: false)
-        }
-    DefaultGenerator().opts(cfg.toClientOptInput()).generate()
+  DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

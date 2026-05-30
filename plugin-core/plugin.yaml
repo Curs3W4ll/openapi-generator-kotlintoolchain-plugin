@@ -7,6 +7,7 @@ tasks:
       generatorName: ${pluginSettings.generatorName}
       verbose: ${pluginSettings.verbose}
       logToStderr: ${pluginSettings.logToStderr}
+      dryRun: ${pluginSettings.dryRun}
 
 generated:
   sources:

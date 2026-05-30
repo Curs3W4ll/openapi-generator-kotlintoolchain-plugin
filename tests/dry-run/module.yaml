@@ -1,0 +1,21 @@
+---
+product: jvm/app
+
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/openapi/test-api.yml"
+    dryRun: true
+
+settings:
+  jvm:
+    jdk:
+      version: 21
+      distributions: [corretto]
+      selectionMode: javaHome
+    mainClass: dry.run.ApplicationKt
+  kotlin:
+    version: 2.3.20
+
+description: Test project to verify the dryRun setting is accepted and no files are written
