@@ -17,6 +17,7 @@ fun openApiGenerate(
   verbose: Boolean?,
   logToStderr: Boolean?,
   dryRun: Boolean?,
+  configOptions: Map<String, String>?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -35,6 +36,7 @@ fun openApiGenerate(
       addGlobalProperty("modelTests", "false")
       setVerbose(verbose ?: false)
       setLogToStderr(logToStderr ?: false)
+      configOptions?.forEach { (key, value) -> addAdditionalProperty(key, value) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

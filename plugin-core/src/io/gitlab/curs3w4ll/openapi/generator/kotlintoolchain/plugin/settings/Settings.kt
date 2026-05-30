@@ -28,4 +28,9 @@ interface Settings {
    * Run the generator without writing any files to disk. Default: false.
    */
   val dryRun: Boolean?
+
+  /**
+   * Generator-specific configuration options passed as key-value pairs.
+   */
+  val configOptions: Map<String, String>?
 }

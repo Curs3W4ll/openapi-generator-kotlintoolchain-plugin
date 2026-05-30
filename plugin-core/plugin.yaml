@@ -8,6 +8,7 @@ tasks:
       verbose: ${pluginSettings.verbose}
       logToStderr: ${pluginSettings.logToStderr}
       dryRun: ${pluginSettings.dryRun}
+      configOptions: ${pluginSettings.configOptions}
 
 generated:
   sources:

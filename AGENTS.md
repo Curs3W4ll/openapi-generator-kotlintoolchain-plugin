@@ -49,6 +49,11 @@ The codebase follows a simple architecture:
 - Run `./kotlin check` to execute all test source sets across every module
 - Tests must validate the newly added feature — a test that always passes regardless of whether the feature behaves
   correctly is not acceptable. When adding a feature, write a test that would fail if the feature were broken or absent.
+- **Tautological assertion anti-pattern:** constructing a value with X and then asserting it equals X is not a test.
+  Example: `val post = PostDto(status = PostDto.Status.ACTIVE); assertEquals(PostDto.Status.ACTIVE, post.status)` always
+  passes. When the real check is compile-time (e.g. that a generated symbol exists), the runtime assertion must compare
+  against a hardcoded primitive — e.g. `assertEquals("active", PostDto.Status.ACTIVE.value)`.
+- **Always run `./kotlin check` and confirm all tests pass before presenting an implementation for review.**
 
 ## Build & Test Commands
 
