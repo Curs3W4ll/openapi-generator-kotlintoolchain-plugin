@@ -1,0 +1,25 @@
+---
+product: jvm/app
+
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/openapi/test-api.yml"
+    modelPackage: pkgname.test.models
+    apiPackage: pkgname.test.apis
+
+dependencies:
+  - com.squareup.okhttp3:okhttp:4.12.0
+  - com.squareup.moshi:moshi-kotlin:1.15.2
+
+settings:
+  jvm:
+    jdk:
+      version: 21
+      distributions: [corretto]
+    mainClass: pkgname.ApplicationKt
+  kotlin:
+    version: 2.3.20
+
+description: Test project to verify modelPackage and apiPackage sub-package overrides are applied by the generator

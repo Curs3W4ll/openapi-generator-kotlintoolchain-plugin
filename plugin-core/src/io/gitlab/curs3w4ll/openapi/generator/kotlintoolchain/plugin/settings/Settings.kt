@@ -33,4 +33,24 @@ interface Settings {
    * Generator-specific configuration options passed as key-value pairs.
    */
   val configOptions: Map<String, String>?
+
+  /**
+   * Default package for all generated classes when more specific packages are not set.
+   */
+  val packageName: String?
+
+  /**
+   * Package for generated API interface/implementation classes.
+   */
+  val apiPackage: String?
+
+  /**
+   * Package for generated model/DTO classes.
+   */
+  val modelPackage: String?
+
+  /**
+   * Root/invoker package used by some generators as the top-level namespace.
+   */
+  val invokerPackage: String?
 }

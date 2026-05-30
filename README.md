@@ -39,15 +39,19 @@ plugins:
     inputSpec: "resources/openapi/api.yml"
 ```
 
-| Setting         | Required | Description                                                              |
-|-----------------|----------|--------------------------------------------------------------------------|
-| `enabled`       | yes      | Activates the plugin for this module.                                    |
-| `generatorName` | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …).        |
-| `inputSpec`     | yes      | Path to the OpenAPI spec file, relative to the module root.              |
-| `verbose`       | no       | Enable verbose logging from the generator. Default: `false`.             |
-| `logToStderr`   | no       | Write all log messages to stderr instead of stdout. Default: `false`.    |
-| `dryRun`        | no       | Run the generator without writing any files to disk. Default: `false`.   |
-| `configOptions` | no       | Generator-specific options as key-value pairs (e.g. `dateLibrary`, `enumPropertyNaming`). |
+| Setting          | Required | Description                                                                               |
+|------------------|----------|-------------------------------------------------------------------------------------------|
+| `enabled`        | yes      | Activates the plugin for this module.                                                     |
+| `generatorName`  | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …).                         |
+| `inputSpec`      | yes      | Path to the OpenAPI spec file, relative to the module root.                               |
+| `verbose`        | no       | Enable verbose logging from the generator. Default: `false`.                              |
+| `logToStderr`    | no       | Write all log messages to stderr instead of stdout. Default: `false`.                     |
+| `dryRun`         | no       | Run the generator without writing any files to disk. Default: `false`.                    |
+| `configOptions`  | no       | Generator-specific options as key-value pairs (e.g. `dateLibrary`, `enumPropertyNaming`). |
+| `packageName`    | no       | Default package for all generated classes when more specific packages are not set.        |
+| `apiPackage`     | no       | Package for generated API interface/implementation classes.                               |
+| `modelPackage`   | no       | Package for generated model/DTO classes.                                                  |
+| `invokerPackage` | no       | Root/invoker package used by some generators as the top-level namespace.                  |
 
 ### Run the generator
 
