@@ -1,0 +1,27 @@
+---
+product: jvm/app
+
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/openapi/test-api.yml"
+    packageName: projectmetadata.test
+    groupId: "com.example.test"
+    id: "my-test-client"
+    version: "2.5.1"
+
+dependencies:
+  - com.squareup.okhttp3:okhttp:4.12.0
+  - com.squareup.moshi:moshi-kotlin:1.15.2
+
+settings:
+  jvm:
+    jdk:
+      version: 21
+      distributions: [corretto]
+    mainClass: projectmetadata.ApplicationKt
+  kotlin:
+    version: 2.3.20
+
+description: Test project to verify groupId, id, and version settings

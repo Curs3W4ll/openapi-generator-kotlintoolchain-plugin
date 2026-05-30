@@ -16,6 +16,9 @@ tasks:
       modelNamePrefix: ${pluginSettings.modelNamePrefix}
       modelNameSuffix: ${pluginSettings.modelNameSuffix}
       apiNameSuffix: ${pluginSettings.apiNameSuffix}
+      groupId: ${pluginSettings.groupId}
+      id: ${pluginSettings.id}
+      version: ${pluginSettings.version}
 
 generated:
   sources:

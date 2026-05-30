@@ -55,6 +55,9 @@ plugins:
 | `modelNamePrefix` | no       | Prefix prepended to every generated model class name.                                     |
 | `modelNameSuffix` | no       | Suffix appended to every generated model class name.                                      |
 | `apiNameSuffix`   | no       | Suffix appended to every generated API class/interface name.                              |
+| `groupId`         | no       | GroupId written into generated build scripts (e.g. `pom.xml`, `build.gradle`).            |
+| `id`              | no       | ArtifactId written into generated build scripts.                                          |
+| `version`         | no       | Artifact version written into generated build scripts.                                    |
 
 ### Run the generator
 

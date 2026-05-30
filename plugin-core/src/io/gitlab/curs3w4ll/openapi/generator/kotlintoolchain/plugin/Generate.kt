@@ -25,6 +25,9 @@ fun openApiGenerate(
   modelNamePrefix: String?,
   modelNameSuffix: String?,
   apiNameSuffix: String?,
+  groupId: String?,
+  id: String?,
+  version: String?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -51,6 +54,9 @@ fun openApiGenerate(
       modelNamePrefix?.let { setModelNamePrefix(it) }
       modelNameSuffix?.let { setModelNameSuffix(it) }
       apiNameSuffix?.let { setApiNameSuffix(it) }
+      groupId?.let { setGroupId(it) }
+      id?.let { setArtifactId(it) }
+      version?.let { setArtifactVersion(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

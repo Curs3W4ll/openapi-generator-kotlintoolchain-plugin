@@ -68,4 +68,19 @@ interface Settings {
    * Suffix appended to every generated API class/interface name.
    */
   val apiNameSuffix: String?
+
+  /**
+   * GroupId written into generated build scripts (e.g. pom.xml, build.gradle).
+   */
+  val groupId: String?
+
+  /**
+   * ArtifactId written into generated build scripts.
+   */
+  val id: String?
+
+  /**
+   * Artifact version written into generated build scripts.
+   */
+  val version: String?
 }
