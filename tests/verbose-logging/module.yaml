@@ -19,7 +19,6 @@ settings:
     jdk:
       version: 21
       distributions: [corretto]
-      selectionMode: javaHome
     mainClass: verbose.logging.ApplicationKt
   kotlin:
     version: 2.3.20

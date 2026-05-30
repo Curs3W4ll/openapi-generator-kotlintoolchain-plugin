@@ -13,7 +13,6 @@ settings:
     jdk:
       version: 21
       distributions: [corretto]
-      selectionMode: javaHome
     mainClass: dry.run.ApplicationKt
   kotlin:
     version: 2.3.20
