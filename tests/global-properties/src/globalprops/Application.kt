@@ -1,0 +1,4 @@
+package globalprops
+
+fun main() {
+}

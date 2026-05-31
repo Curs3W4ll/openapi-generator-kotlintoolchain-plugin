@@ -47,7 +47,9 @@ plugins:
 | `verbose`                    | no       | Enable verbose logging from the generator. Default: `false`.                                                   |
 | `logToStderr`                | no       | Write all log messages to stderr instead of stdout. Default: `false`.                                          |
 | `dryRun`                     | no       | Run the generator without writing any files to disk. Default: `false`.                                         |
+| `globalProperties`           | no       | Global property overrides for the generator (e.g. `{apiTests: "false", debugModels: "true"}`).                 |
 | `configOptions`              | no       | Generator-specific options as key-value pairs (e.g. `dateLibrary`, `enumPropertyNaming`).                      |
+| `additionalProperties`       | no       | Extra properties made available inside Mustache/Handlebars templates (e.g. `{serializableModel: "true"}`).     |
 | `packageName`                | no       | Default package for all generated classes when more specific packages are not set.                             |
 | `apiPackage`                 | no       | Package for generated API interface/implementation classes.                                                    |
 | `modelPackage`               | no       | Package for generated model/DTO classes.                                                                       |
@@ -72,6 +74,12 @@ plugins:
 | `modelNameMappings`          | no       | Map from schema/model names to generated class names (e.g. `{PostDto: BlogPostDto}`).                          |
 | `enumNameMappings`           | no       | Map from enum value names to generated enum constant names (e.g. `{active: ENABLED}`).                         |
 | `operationIdNameMappings`    | no       | Map from operation IDs to generated method names (e.g. `{getPost: fetchPost}`).                                |
+
+> **Note — default `globalProperties`:** The plugin currently defaults `apiTests` and `modelTests` to `"false"` in
+> `globalProperties`. This is a temporary workaround: the Kotlin Toolchain registers the generator's entire output
+> directory as a source set, so generated test files (which import JUnit) would fail to compile. Override these
+> explicitly in `globalProperties` if you need test files (e.g. to compile them separately). These defaults will be
+> removed once the Kotlin Toolchain supports declaring generated test source sets.
 
 ### Run the generator
 

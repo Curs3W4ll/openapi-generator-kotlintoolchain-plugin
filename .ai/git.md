@@ -104,6 +104,17 @@ Do not skip or defer this step — documentation is part of the feature, not an 
 
 This project uses pre-commit to ensure committed code is good enough.
 
-Pre-commit should already be installed by mise hooks, but you can make sure so by running `mise pre-commit:install`
+Pre-commit should already be installed by mise hooks, but you can make sure so by running `mise pre-commit:setup`
 
 If committing fails, check the output for details — it is likely caused by one of the hooks.
+
+### Linters not found (`Executable 'ktlint' not found`, etc.)
+
+The pre-commit hooks rely on tools managed by mise (ktlint, markdownlint-cli2, …). When the shell that runs
+`git commit` does not have the mise shims in its PATH, the hooks fail with "Executable not found".
+
+Fix: run git commit through mise so all tools are available:
+
+```bash
+mise exec -- git commit -m "..."
+```

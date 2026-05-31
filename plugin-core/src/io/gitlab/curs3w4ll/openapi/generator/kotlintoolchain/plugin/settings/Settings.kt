@@ -30,9 +30,21 @@ interface Settings {
   val dryRun: Boolean?
 
   /**
+   * Global property overrides passed to the generator, replacing built-in defaults
+   * (e.g. `{"apiTests": "false", "debugModels": "true"}`).
+   */
+  val globalProperties: Map<String, String>?
+
+  /**
    * Generator-specific configuration options passed as key-value pairs.
    */
   val configOptions: Map<String, String>?
+
+  /**
+   * Extra properties made available inside Mustache/Handlebars templates
+   * (e.g. `{"serializableModel": "true", "hideGenerationTimestamp": "true"}`).
+   */
+  val additionalProperties: Map<String, String>?
 
   /**
    * Default package for all generated classes when more specific packages are not set.

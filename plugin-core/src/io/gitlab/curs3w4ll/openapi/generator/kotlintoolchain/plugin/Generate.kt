@@ -17,7 +17,9 @@ fun openApiGenerate(
   verbose: Boolean?,
   logToStderr: Boolean?,
   dryRun: Boolean?,
+  globalProperties: Map<String, String>?,
   configOptions: Map<String, String>?,
+  additionalProperties: Map<String, String>?,
   packageName: String?,
   apiPackage: String?,
   modelPackage: String?,
@@ -56,11 +58,20 @@ fun openApiGenerate(
       setGeneratorName(generatorName)
       setInputSpec(inputSpec.toString())
       setOutputDir(outputDir.toString())
-      addGlobalProperty("apiTests", "false")
-      addGlobalProperty("modelTests", "false")
       setVerbose(verbose ?: false)
       setLogToStderr(logToStderr ?: false)
+
+      // Suppress generated test files by default: the Kotlin Toolchain picks up the full
+      // generator output directory as a source set and generated test files fail to compile
+      // because JUnit is not available. Users can re-enable by setting these keys explicitly
+      // in globalProperties. These defaults will be removed once the Kotlin Toolchain gains
+      // support for declaring generated test source sets.
+      addGlobalProperty("apiTests", "false")
+      addGlobalProperty("modelTests", "false")
+
+      globalProperties?.forEach { (key, value) -> addGlobalProperty(key, value) }
       configOptions?.forEach { (key, value) -> addAdditionalProperty(key, value) }
+      additionalProperties?.forEach { (key, value) -> addAdditionalProperty(key, value) }
       packageName?.let { setPackageName(it) }
       apiPackage?.let { setApiPackage(it) }
       modelPackage?.let { setModelPackage(it) }

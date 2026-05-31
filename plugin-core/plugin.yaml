@@ -8,7 +8,9 @@ tasks:
       verbose: ${pluginSettings.verbose}
       logToStderr: ${pluginSettings.logToStderr}
       dryRun: ${pluginSettings.dryRun}
+      globalProperties: ${pluginSettings.globalProperties}
       configOptions: ${pluginSettings.configOptions}
+      additionalProperties: ${pluginSettings.additionalProperties}
       packageName: ${pluginSettings.packageName}
       apiPackage: ${pluginSettings.apiPackage}
       modelPackage: ${pluginSettings.modelPackage}
