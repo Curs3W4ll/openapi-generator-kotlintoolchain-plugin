@@ -63,6 +63,10 @@ plugins:
 | `gitUserId`       | no       | Git user or organisation name. Included in generated repository URLs and scripts.               |
 | `gitRepoId`       | no       | Git repository name. Included in generated repository URLs and scripts.                         |
 | `releaseNote`     | no       | Release note text embedded in generated changelogs and scripts.                                 |
+| `typeMappings`    | no       | Map from OpenAPI type names to language-specific types (e.g. `{DateTime: Instant}`).           |
+| `instantiationTypes` | no    | Map from OpenAPI container types to their concrete instantiation classes (e.g. `{array: LinkedList}`). |
+| `importMappings`  | no       | Map from class names to fully-qualified import paths (e.g. `{Instant: java.time.Instant}`).    |
+| `languageSpecificPrimitives` | no | Additional types to treat as language primitives — not wrapped in model classes (e.g. `[Instant, LocalDate]`). |
 
 ### Run the generator
 

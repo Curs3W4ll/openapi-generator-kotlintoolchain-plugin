@@ -109,4 +109,27 @@ interface Settings {
    * Release note text embedded in generated changelogs and scripts.
    */
   val releaseNote: String?
+
+  /**
+   * Maps OpenAPI type names to language-specific types (e.g. `{"DateTime": "Instant"}`).
+   */
+  val typeMappings: Map<String, String>?
+
+  /**
+   * Maps OpenAPI container types to their concrete instantiation classes
+   * (e.g. `{"array": "LinkedList"}`).
+   */
+  val instantiationTypes: Map<String, String>?
+
+  /**
+   * Maps class names to fully-qualified import paths
+   * (e.g. `{"Instant": "java.time.Instant"}`).
+   */
+  val importMappings: Map<String, String>?
+
+  /**
+   * Additional type names to treat as language primitives, preventing the generator
+   * from wrapping them in model classes (e.g. `["Instant", "LocalDate"]`).
+   */
+  val languageSpecificPrimitives: List<String>?
 }

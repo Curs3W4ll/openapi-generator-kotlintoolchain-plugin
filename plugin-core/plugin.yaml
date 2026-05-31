@@ -24,6 +24,10 @@ tasks:
       gitUserId: ${pluginSettings.gitUserId}
       gitRepoId: ${pluginSettings.gitRepoId}
       releaseNote: ${pluginSettings.releaseNote}
+      typeMappings: ${pluginSettings.typeMappings}
+      instantiationTypes: ${pluginSettings.instantiationTypes}
+      importMappings: ${pluginSettings.importMappings}
+      languageSpecificPrimitives: ${pluginSettings.languageSpecificPrimitives}
 
 generated:
   sources:

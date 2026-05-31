@@ -33,6 +33,10 @@ fun openApiGenerate(
   gitUserId: String?,
   gitRepoId: String?,
   releaseNote: String?,
+  typeMappings: Map<String, String>?,
+  instantiationTypes: Map<String, String>?,
+  importMappings: Map<String, String>?,
+  languageSpecificPrimitives: List<String>?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -67,6 +71,10 @@ fun openApiGenerate(
       gitUserId?.let { setGitUserId(it) }
       gitRepoId?.let { setGitRepoId(it) }
       releaseNote?.let { setReleaseNote(it) }
+      typeMappings?.let { setTypeMappings(it) }
+      instantiationTypes?.let { setInstantiationTypes(it) }
+      importMappings?.let { setImportMappings(it) }
+      languageSpecificPrimitives?.let { setLanguageSpecificPrimitives(it.toSet()) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

@@ -1,0 +1,63 @@
+---
+openapi: 3.0.3
+info:
+  title: TypeMappings test API
+  version: 0.0.1
+
+servers:
+  - url: https://example.com
+
+components:
+  schemas:
+    PostLabel:
+      description: A simple string label — used to test languageSpecificPrimitives suppression
+      type: string
+    PostDto:
+      description: A blog post with a date-time field and a tags list to exercise type and instantiation mappings
+      type: object
+      required:
+        - id
+        - title
+        - status
+        - createdAt
+        - tags
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+        createdAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        label:
+          $ref: '#/components/schemas/PostLabel'
+
+paths:
+  /posts/{id}:
+    get:
+      operationId: getPost
+      summary: Fetch a post by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The post matching the id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDto'

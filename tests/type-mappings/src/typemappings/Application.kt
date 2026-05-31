@@ -1,0 +1,4 @@
+package typemappings
+
+fun main() {
+}
