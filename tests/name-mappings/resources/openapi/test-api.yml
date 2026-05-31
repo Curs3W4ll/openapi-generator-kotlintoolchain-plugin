@@ -1,0 +1,49 @@
+---
+openapi: 3.0.3
+info:
+  title: NameMappings test API
+  version: 0.0.1
+
+servers:
+  - url: https://example.com
+
+components:
+  schemas:
+    PostDto:
+      description: A blog post used to test modelNameMappings and nameMappings
+      type: object
+      required:
+        - id
+        - title
+        - status
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+
+paths:
+  /posts/{id}:
+    get:
+      operationId: getPost
+      summary: Fetch a post by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The post matching the id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDto'

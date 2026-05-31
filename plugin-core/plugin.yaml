@@ -28,6 +28,11 @@ tasks:
       instantiationTypes: ${pluginSettings.instantiationTypes}
       importMappings: ${pluginSettings.importMappings}
       languageSpecificPrimitives: ${pluginSettings.languageSpecificPrimitives}
+      nameMappings: ${pluginSettings.nameMappings}
+      parameterNameMappings: ${pluginSettings.parameterNameMappings}
+      modelNameMappings: ${pluginSettings.modelNameMappings}
+      enumNameMappings: ${pluginSettings.enumNameMappings}
+      operationIdNameMappings: ${pluginSettings.operationIdNameMappings}
 
 generated:
   sources:

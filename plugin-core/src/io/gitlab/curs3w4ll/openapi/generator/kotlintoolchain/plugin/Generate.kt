@@ -37,6 +37,11 @@ fun openApiGenerate(
   instantiationTypes: Map<String, String>?,
   importMappings: Map<String, String>?,
   languageSpecificPrimitives: List<String>?,
+  nameMappings: Map<String, String>?,
+  parameterNameMappings: Map<String, String>?,
+  modelNameMappings: Map<String, String>?,
+  enumNameMappings: Map<String, String>?,
+  operationIdNameMappings: Map<String, String>?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -75,6 +80,11 @@ fun openApiGenerate(
       instantiationTypes?.let { setInstantiationTypes(it) }
       importMappings?.let { setImportMappings(it) }
       languageSpecificPrimitives?.let { setLanguageSpecificPrimitives(it.toSet()) }
+      nameMappings?.let { setNameMappings(it) }
+      parameterNameMappings?.let { setParameterNameMappings(it) }
+      modelNameMappings?.let { setModelNameMappings(it) }
+      enumNameMappings?.let { setEnumNameMappings(it) }
+      operationIdNameMappings?.let { setOperationIdNameMappings(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

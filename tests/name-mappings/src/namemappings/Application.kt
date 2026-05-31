@@ -1,0 +1,4 @@
+package namemappings
+
+fun main() {
+}

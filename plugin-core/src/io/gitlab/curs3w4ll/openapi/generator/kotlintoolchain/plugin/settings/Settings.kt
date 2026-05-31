@@ -132,4 +132,34 @@ interface Settings {
    * from wrapping them in model classes (e.g. `["Instant", "LocalDate"]`).
    */
   val languageSpecificPrimitives: List<String>?
+
+  /**
+   * Maps schema property names to generated property names
+   * (e.g. `{"title": "heading"}`).
+   */
+  val nameMappings: Map<String, String>?
+
+  /**
+   * Maps operation parameter names to generated parameter names
+   * (e.g. `{"id": "postId"}`).
+   */
+  val parameterNameMappings: Map<String, String>?
+
+  /**
+   * Maps schema/model names to generated class names
+   * (e.g. `{"PostDto": "BlogPostDto"}`).
+   */
+  val modelNameMappings: Map<String, String>?
+
+  /**
+   * Maps enum value names to generated enum constant names
+   * (e.g. `{"active": "ENABLED"}`).
+   */
+  val enumNameMappings: Map<String, String>?
+
+  /**
+   * Maps operation IDs to generated method names
+   * (e.g. `{"getPost": "fetchPost"}`).
+   */
+  val operationIdNameMappings: Map<String, String>?
 }
