@@ -235,4 +235,21 @@ interface Settings {
    * code generation (e.g. `{"SET_TAGS_FOR_ALL_OPERATIONS": "blog"}`).
    */
   val openapiNormalizer: Map<String, String>?
+
+  /**
+   * Strip the prefix (everything before the first `_`) from operation IDs. Default: false.
+   * When true, an operation ID like `Pets_GetPets` becomes `getPets`.
+   */
+  val removeOperationIdPrefix: Boolean?
+
+  /**
+   * Do not include operation examples from the spec in generated code. Default: false.
+   */
+  val skipOperationExample: Boolean?
+
+  /**
+   * Enable the external post-processing hook executed after each file is generated. Default: false.
+   * The command to run is read from the `OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` environment variable.
+   */
+  val enablePostProcessFile: Boolean?
 }

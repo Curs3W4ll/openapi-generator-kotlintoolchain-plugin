@@ -54,6 +54,9 @@ fun openApiGenerate(
   reservedWordsMappings: Map<String, String>?,
   serverVariables: Map<String, String>?,
   openapiNormalizer: Map<String, String>?,
+  removeOperationIdPrefix: Boolean?,
+  skipOperationExample: Boolean?,
+  enablePostProcessFile: Boolean?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -117,6 +120,9 @@ fun openApiGenerate(
       reservedWordsMappings?.let { setReservedWordsMappings(it) }
       serverVariables?.let { setServerVariables(it) }
       openapiNormalizer?.let { setOpenapiNormalizer(it) }
+      removeOperationIdPrefix?.let { setRemoveOperationIdPrefix(it) }
+      skipOperationExample?.let { setSkipOperationExample(it) }
+      enablePostProcessFile?.let { setEnablePostProcessFile(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }

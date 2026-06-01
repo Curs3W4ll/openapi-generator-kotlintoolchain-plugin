@@ -84,6 +84,9 @@ plugins:
 | `reservedWordsMappings`      | no       | Override how reserved words in the target language are escaped (e.g. `{class: clazz}`).                        |
 | `serverVariables`            | no       | Variable substitutions for server URL templates in the spec (e.g. `{scheme: https, env: prod}`).               |
 | `openapiNormalizer`          | no       | Rules for the OpenAPI normalizer that fix or transform the spec before generation (e.g. `{SET_TAGS_FOR_ALL_OPERATIONS: blog}`). |
+| `removeOperationIdPrefix`    | no       | Strip the prefix (everything before the first `_`) from operation IDs before generating method names (e.g. `Pets_GetPets` → `getPets`). Default: `false`. |
+| `skipOperationExample`       | no       | Do not include operation examples from the spec in generated code. Default: `false`.                            |
+| `enablePostProcessFile`      | no       | Enable the external post-processing hook run after each generated file. The command is read from the `OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` environment variable. Default: `false`. |
 
 > **Note — default `globalProperties`:** The plugin currently defaults `apiTests` and `modelTests` to `"false"` in
 > `globalProperties`. This is a temporary workaround: the Kotlin Toolchain registers the generator's entire output

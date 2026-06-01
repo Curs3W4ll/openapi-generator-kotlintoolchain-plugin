@@ -45,6 +45,9 @@ tasks:
       reservedWordsMappings: ${pluginSettings.reservedWordsMappings}
       serverVariables: ${pluginSettings.serverVariables}
       openapiNormalizer: ${pluginSettings.openapiNormalizer}
+      removeOperationIdPrefix: ${pluginSettings.removeOperationIdPrefix}
+      skipOperationExample: ${pluginSettings.skipOperationExample}
+      enablePostProcessFile: ${pluginSettings.enablePostProcessFile}
 
 generated:
   sources:
