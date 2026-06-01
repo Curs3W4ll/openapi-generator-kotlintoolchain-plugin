@@ -50,6 +50,7 @@ plugins:
 | `validateSpec`               | no       | Enable or disable spec validation before code generation. Default: `true`.                                     |
 | `skipValidateSpec`           | no       | Skip spec validation entirely. Equivalent to `validateSpec: false`. Default: `false`.                          |
 | `cleanupOutput`              | no       | Delete all files in the output directory before generation begins. Default: `false`.                            |
+| `skipOverwrite`              | no       | Prevent the generator from overwriting files that already exist in the output directory. Default: `false`.      |
 | `globalProperties`           | no       | Global property overrides for the generator (e.g. `{apiTests: "false", debugModels: "true"}`).                 |
 | `configOptions`              | no       | Generator-specific options as key-value pairs (e.g. `dateLibrary`, `enumPropertyNaming`).                      |
 | `additionalProperties`       | no       | Extra properties made available inside Mustache/Handlebars templates (e.g. `{serializableModel: "true"}`).     |

@@ -20,6 +20,7 @@ fun openApiGenerate(
   validateSpec: Boolean?,
   skipValidateSpec: Boolean?,
   cleanupOutput: Boolean?,
+  skipOverwrite: Boolean?,
   globalProperties: Map<String, String>?,
   configOptions: Map<String, String>?,
   additionalProperties: Map<String, String>?,
@@ -67,6 +68,7 @@ fun openApiGenerate(
       setVerbose(verbose ?: false)
       setLogToStderr(logToStderr ?: false)
       setValidateSpec((validateSpec ?: true) && (skipValidateSpec != true))
+      skipOverwrite?.let { setSkipOverwrite(it) }
 
       // Suppress generated test files by default: the Kotlin Toolchain picks up the full
       // generator output directory as a source set and generated test files fail to compile

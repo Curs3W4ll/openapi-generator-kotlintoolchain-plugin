@@ -49,6 +49,12 @@ interface Settings {
   val cleanupOutput: Boolean?
 
   /**
+   * Prevent the generator from overwriting files that already exist in the output directory. Default: false.
+   * When true, only new files are written; hand-edited generated files are preserved across runs.
+   */
+  val skipOverwrite: Boolean?
+
+  /**
    * Global property overrides passed to the generator, replacing built-in defaults
    * (e.g. `{"apiTests": "false", "debugModels": "true"}`).
    */
