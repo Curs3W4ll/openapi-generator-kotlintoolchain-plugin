@@ -81,6 +81,9 @@ plugins:
 | `schemaMappings`             | no       | Map from spec schema names to replacement types (e.g. `{PostDto: com.example.PostDto}`).                       |
 | `inlineSchemaNameMappings`   | no       | Map from auto-generated inline schema names to desired names (e.g. `{listPosts_200_response: PostCollection}`). |
 | `inlineSchemaOptions`        | no       | Options controlling how inline schemas are handled (e.g. `{RESOLVE_INLINE_ENUMS: "true"}`).                    |
+| `reservedWordsMappings`      | no       | Override how reserved words in the target language are escaped (e.g. `{class: clazz}`).                        |
+| `serverVariables`            | no       | Variable substitutions for server URL templates in the spec (e.g. `{scheme: https, env: prod}`).               |
+| `openapiNormalizer`          | no       | Rules for the OpenAPI normalizer that fix or transform the spec before generation (e.g. `{SET_TAGS_FOR_ALL_OPERATIONS: blog}`). |
 
 > **Note — default `globalProperties`:** The plugin currently defaults `apiTests` and `modelTests` to `"false"` in
 > `globalProperties`. This is a temporary workaround: the Kotlin Toolchain registers the generator's entire output

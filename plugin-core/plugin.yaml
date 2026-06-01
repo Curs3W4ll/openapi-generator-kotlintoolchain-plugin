@@ -42,6 +42,9 @@ tasks:
       schemaMappings: ${pluginSettings.schemaMappings}
       inlineSchemaNameMappings: ${pluginSettings.inlineSchemaNameMappings}
       inlineSchemaOptions: ${pluginSettings.inlineSchemaOptions}
+      reservedWordsMappings: ${pluginSettings.reservedWordsMappings}
+      serverVariables: ${pluginSettings.serverVariables}
+      openapiNormalizer: ${pluginSettings.openapiNormalizer}
 
 generated:
   sources:

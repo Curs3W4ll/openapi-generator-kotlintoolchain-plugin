@@ -217,4 +217,22 @@ interface Settings {
    * (e.g. `{"RESOLVE_INLINE_ENUMS": "true"}`).
    */
   val inlineSchemaOptions: Map<String, String>?
+
+  /**
+   * Overrides how reserved words in the target language are escaped
+   * (e.g. `{"class": "clazz"}`). By default the generator prefixes with an underscore.
+   */
+  val reservedWordsMappings: Map<String, String>?
+
+  /**
+   * Variable substitutions for server URL templates defined in the spec
+   * (e.g. `{"scheme": "https", "env": "prod"}`).
+   */
+  val serverVariables: Map<String, String>?
+
+  /**
+   * Rules passed to the OpenAPI normalizer that fix or transform the parsed spec before
+   * code generation (e.g. `{"SET_TAGS_FOR_ALL_OPERATIONS": "blog"}`).
+   */
+  val openapiNormalizer: Map<String, String>?
 }

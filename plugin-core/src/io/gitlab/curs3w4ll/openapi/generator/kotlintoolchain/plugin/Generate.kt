@@ -51,6 +51,9 @@ fun openApiGenerate(
   schemaMappings: Map<String, String>?,
   inlineSchemaNameMappings: Map<String, String>?,
   inlineSchemaOptions: Map<String, String>?,
+  reservedWordsMappings: Map<String, String>?,
+  serverVariables: Map<String, String>?,
+  openapiNormalizer: Map<String, String>?,
 ) {
   if (!inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
@@ -111,6 +114,9 @@ fun openApiGenerate(
       schemaMappings?.let { setSchemaMappings(it) }
       inlineSchemaNameMappings?.let { setInlineSchemaNameMappings(it) }
       inlineSchemaOptions?.let { setInlineSchemaOptions(it) }
+      reservedWordsMappings?.let { setReservedWordsMappings(it) }
+      serverVariables?.let { setServerVariables(it) }
+      openapiNormalizer?.let { setOpenapiNormalizer(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
 }
