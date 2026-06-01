@@ -42,6 +42,13 @@ interface Settings {
   val skipValidateSpec: Boolean?
 
   /**
+   * Clean up the output directory before generation begins. Default: false.
+   * When true, all files in the output directory are deleted before generating new code,
+   * preventing stale files from accumulating when endpoints or models are removed from the spec.
+   */
+  val cleanupOutput: Boolean?
+
+  /**
    * Global property overrides passed to the generator, replacing built-in defaults
    * (e.g. `{"apiTests": "false", "debugModels": "true"}`).
    */

@@ -10,6 +10,7 @@ tasks:
       dryRun: ${pluginSettings.dryRun}
       validateSpec: ${pluginSettings.validateSpec}
       skipValidateSpec: ${pluginSettings.skipValidateSpec}
+      cleanupOutput: ${pluginSettings.cleanupOutput}
       globalProperties: ${pluginSettings.globalProperties}
       configOptions: ${pluginSettings.configOptions}
       additionalProperties: ${pluginSettings.additionalProperties}

@@ -19,6 +19,7 @@ fun openApiGenerate(
   dryRun: Boolean?,
   validateSpec: Boolean?,
   skipValidateSpec: Boolean?,
+  cleanupOutput: Boolean?,
   globalProperties: Map<String, String>?,
   configOptions: Map<String, String>?,
   additionalProperties: Map<String, String>?,
@@ -53,6 +54,9 @@ fun openApiGenerate(
 
   println("Generating files")
 
+  if (cleanupOutput == true) {
+    outputDir.toFile().deleteRecursively()
+  }
   outputDir.createDirectories()
 
   val cfg =

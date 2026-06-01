@@ -1,0 +1,25 @@
+---
+product: jvm/app
+
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/openapi/test-api.yml"
+    cleanupOutput: true
+
+dependencies:
+  - com.squareup.okhttp3:okhttp:4.12.0
+  - com.squareup.moshi:moshi-kotlin:1.15.2
+  - ch.qos.logback:logback-classic:1.5.18
+
+settings:
+  jvm:
+    jdk:
+      version: 21
+      distributions: [corretto]
+    mainClass: cleanup.output.ApplicationKt
+  kotlin:
+    version: 2.3.20
+
+description: Test project to verify the cleanupOutput setting is accepted and generation still produces expected output
