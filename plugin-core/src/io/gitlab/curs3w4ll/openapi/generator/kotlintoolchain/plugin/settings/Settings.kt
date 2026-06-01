@@ -30,6 +30,18 @@ interface Settings {
   val dryRun: Boolean?
 
   /**
+   * Explicitly enable or disable spec validation before code generation. Default: true.
+   * Set to false to allow generation from specs with known validation errors.
+   */
+  val validateSpec: Boolean?
+
+  /**
+   * Skip spec validation entirely before code generation. Default: false.
+   * Equivalent to setting validateSpec to false.
+   */
+  val skipValidateSpec: Boolean?
+
+  /**
    * Global property overrides passed to the generator, replacing built-in defaults
    * (e.g. `{"apiTests": "false", "debugModels": "true"}`).
    */

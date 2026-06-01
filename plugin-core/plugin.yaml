@@ -8,6 +8,8 @@ tasks:
       verbose: ${pluginSettings.verbose}
       logToStderr: ${pluginSettings.logToStderr}
       dryRun: ${pluginSettings.dryRun}
+      validateSpec: ${pluginSettings.validateSpec}
+      skipValidateSpec: ${pluginSettings.skipValidateSpec}
       globalProperties: ${pluginSettings.globalProperties}
       configOptions: ${pluginSettings.configOptions}
       additionalProperties: ${pluginSettings.additionalProperties}

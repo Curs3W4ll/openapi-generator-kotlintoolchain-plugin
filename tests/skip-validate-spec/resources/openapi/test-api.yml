@@ -1,0 +1,36 @@
+---
+openapi: 3.0.3
+info:
+  title: Skip Validate Spec Test
+  # version is intentionally omitted — it is required by OpenAPI 3.0 spec
+  # and will cause a validation error unless skipValidateSpec is enabled
+
+paths:
+  /posts/{id}:
+    get:
+      operationId: getPost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDto'
+
+components:
+  schemas:
+    PostDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string

@@ -47,6 +47,8 @@ plugins:
 | `verbose`                    | no       | Enable verbose logging from the generator. Default: `false`.                                                   |
 | `logToStderr`                | no       | Write all log messages to stderr instead of stdout. Default: `false`.                                          |
 | `dryRun`                     | no       | Run the generator without writing any files to disk. Default: `false`.                                         |
+| `validateSpec`               | no       | Enable or disable spec validation before code generation. Default: `true`.                                     |
+| `skipValidateSpec`           | no       | Skip spec validation entirely. Equivalent to `validateSpec: false`. Default: `false`.                          |
 | `globalProperties`           | no       | Global property overrides for the generator (e.g. `{apiTests: "false", debugModels: "true"}`).                 |
 | `configOptions`              | no       | Generator-specific options as key-value pairs (e.g. `dateLibrary`, `enumPropertyNaming`).                      |
 | `additionalProperties`       | no       | Extra properties made available inside Mustache/Handlebars templates (e.g. `{serializableModel: "true"}`).     |
