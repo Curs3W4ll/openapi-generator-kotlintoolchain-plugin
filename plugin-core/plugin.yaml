@@ -39,6 +39,9 @@ tasks:
       modelNameMappings: ${pluginSettings.modelNameMappings}
       enumNameMappings: ${pluginSettings.enumNameMappings}
       operationIdNameMappings: ${pluginSettings.operationIdNameMappings}
+      schemaMappings: ${pluginSettings.schemaMappings}
+      inlineSchemaNameMappings: ${pluginSettings.inlineSchemaNameMappings}
+      inlineSchemaOptions: ${pluginSettings.inlineSchemaOptions}
 
 generated:
   sources:

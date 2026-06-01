@@ -78,6 +78,9 @@ plugins:
 | `modelNameMappings`          | no       | Map from schema/model names to generated class names (e.g. `{PostDto: BlogPostDto}`).                          |
 | `enumNameMappings`           | no       | Map from enum value names to generated enum constant names (e.g. `{active: ENABLED}`).                         |
 | `operationIdNameMappings`    | no       | Map from operation IDs to generated method names (e.g. `{getPost: fetchPost}`).                                |
+| `schemaMappings`             | no       | Map from spec schema names to replacement types (e.g. `{PostDto: com.example.PostDto}`).                       |
+| `inlineSchemaNameMappings`   | no       | Map from auto-generated inline schema names to desired names (e.g. `{listPosts_200_response: PostCollection}`). |
+| `inlineSchemaOptions`        | no       | Options controlling how inline schemas are handled (e.g. `{RESOLVE_INLINE_ENUMS: "true"}`).                    |
 
 > **Note — default `globalProperties`:** The plugin currently defaults `apiTests` and `modelTests` to `"false"` in
 > `globalProperties`. This is a temporary workaround: the Kotlin Toolchain registers the generator's entire output

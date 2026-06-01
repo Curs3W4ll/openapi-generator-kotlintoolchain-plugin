@@ -199,4 +199,22 @@ interface Settings {
    * (e.g. `{"getPost": "fetchPost"}`).
    */
   val operationIdNameMappings: Map<String, String>?
+
+  /**
+   * Maps spec schema names to replacement class names or fully-qualified types
+   * (e.g. `{"PostDto": "com.example.PostDto"}`).
+   */
+  val schemaMappings: Map<String, String>?
+
+  /**
+   * Renames auto-generated names for inline schemas
+   * (e.g. `{"ListPosts200Response": "PostCollection"}`).
+   */
+  val inlineSchemaNameMappings: Map<String, String>?
+
+  /**
+   * Options controlling how inline schemas are handled
+   * (e.g. `{"RESOLVE_INLINE_ENUMS": "true"}`).
+   */
+  val inlineSchemaOptions: Map<String, String>?
 }
