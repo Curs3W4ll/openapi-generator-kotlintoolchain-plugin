@@ -3,6 +3,7 @@ tasks:
   generateOpenAPI:
     action: !io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.openApiGenerate
       inputSpec: ${module.rootDir}/${pluginSettings.inputSpec}
+      # TODO: #46 Use only one @Output Path once the Kotlin Toolchain supports it
       kotlinMainSourcesDir: ${taskOutputDir}/src/main/kotlin
       kotlinTestSourcesDir: ${taskOutputDir}/src/test/kotlin
       javaMainSourcesDir: ${taskOutputDir}/src/main/java
@@ -54,6 +55,8 @@ tasks:
 
 generated:
   sources:
+    # TODO: #46 Use dynamic directory computing once the Kotlin Toolchain supports it
+    # e.g. ${tasks.generateOpenAPI.action.outputDir}/src/main/kotlin/
     - language: kotlin
       directory: ${tasks.generateOpenAPI.action.kotlinMainSourcesDir}
     - language: kotlin

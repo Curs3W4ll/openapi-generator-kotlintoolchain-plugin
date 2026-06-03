@@ -12,6 +12,7 @@ import kotlin.io.path.isRegularFile
 @TaskAction
 fun openApiGenerate(
   @Input inputSpec: Path,
+  // TODO: #46 Use only one @Output Path once the Kotlin Toolchain supports it
   @Output kotlinMainSourcesDir: Path,
   @Output kotlinTestSourcesDir: Path,
   @Output javaMainSourcesDir: Path,
@@ -69,6 +70,7 @@ fun openApiGenerate(
 
   // The four @Output dirs all sit under src/{main,test}/{kotlin,java}/ inside a common root.
   // Derive that root by walking up three levels from kotlinMainSourcesDir.
+  // TODO: #46 Use the only @Output Path here to remove `.parent.parent.parent`
   val outputDir = kotlinMainSourcesDir.parent.parent.parent
 
   if (cleanupOutput == true) {
