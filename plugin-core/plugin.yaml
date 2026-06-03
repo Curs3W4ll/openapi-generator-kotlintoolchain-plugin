@@ -3,7 +3,10 @@ tasks:
   generateOpenAPI:
     action: !io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.openApiGenerate
       inputSpec: ${module.rootDir}/${pluginSettings.inputSpec}
-      outputDir: ${taskOutputDir}
+      kotlinMainSourcesDir: ${taskOutputDir}/src/main/kotlin
+      kotlinTestSourcesDir: ${taskOutputDir}/src/test/kotlin
+      javaMainSourcesDir: ${taskOutputDir}/src/main/java
+      javaTestSourcesDir: ${taskOutputDir}/src/test/java
       generatorName: ${pluginSettings.generatorName}
       verbose: ${pluginSettings.verbose}
       logToStderr: ${pluginSettings.logToStderr}
@@ -52,4 +55,14 @@ tasks:
 generated:
   sources:
     - language: kotlin
-      directory: ${tasks.generateOpenAPI.action.outputDir}
+      directory: ${tasks.generateOpenAPI.action.kotlinMainSourcesDir}
+    - language: kotlin
+      directory: ${tasks.generateOpenAPI.action.kotlinTestSourcesDir}
+      fragment:
+        isTest: true
+    - language: java
+      directory: ${tasks.generateOpenAPI.action.javaMainSourcesDir}
+    - language: java
+      directory: ${tasks.generateOpenAPI.action.javaTestSourcesDir}
+      fragment:
+        isTest: true

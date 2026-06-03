@@ -12,7 +12,10 @@ import kotlin.io.path.isRegularFile
 @TaskAction
 fun openApiGenerate(
   @Input inputSpec: Path,
-  @Output outputDir: Path,
+  @Output kotlinMainSourcesDir: Path,
+  @Output kotlinTestSourcesDir: Path,
+  @Output javaMainSourcesDir: Path,
+  @Output javaTestSourcesDir: Path,
   generatorName: String,
   verbose: Boolean?,
   logToStderr: Boolean?,
@@ -64,6 +67,10 @@ fun openApiGenerate(
 
   println("Generating files")
 
+  // The four @Output dirs all sit under src/{main,test}/{kotlin,java}/ inside a common root.
+  // Derive that root by walking up three levels from kotlinMainSourcesDir.
+  val outputDir = kotlinMainSourcesDir.parent.parent.parent
+
   if (cleanupOutput == true) {
     outputDir.toFile().deleteRecursively()
   }
@@ -78,14 +85,6 @@ fun openApiGenerate(
       setLogToStderr(logToStderr ?: false)
       setValidateSpec((validateSpec ?: true) && (skipValidateSpec != true))
       skipOverwrite?.let { setSkipOverwrite(it) }
-
-      // Suppress generated test files by default: the Kotlin Toolchain picks up the full
-      // generator output directory as a source set and generated test files fail to compile
-      // because JUnit is not available. Users can re-enable by setting these keys explicitly
-      // in globalProperties. These defaults will be removed once the Kotlin Toolchain gains
-      // support for declaring generated test source sets.
-      addGlobalProperty("apiTests", "false")
-      addGlobalProperty("modelTests", "false")
 
       globalProperties?.forEach { (key, value) -> addGlobalProperty(key, value) }
       configOptions?.forEach { (key, value) -> addAdditionalProperty(key, value) }

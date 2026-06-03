@@ -4,7 +4,7 @@ A [Kotlin Toolchain](https://kotlin-toolchain.org/latest/) plugin that
 integrates [OpenAPI Generator](https://openapi-generator.tech/) into the build pipeline.
 
 It exposes a `generateOpenAPI` task that reads an OpenAPI specification file, runs the configured generator, and
-automatically registers the produced Kotlin sources as a source set — no manual wiring needed.
+automatically registers the produced sources as source sets — Kotlin and Java, main and test — no manual wiring needed.
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![GitLab](https://img.shields.io/badge/source-GitLab-orange.svg)](https://gitlab.com/curs3_w4ll/openapi-generator-kotlintoolchain-plugin)
@@ -87,12 +87,6 @@ plugins:
 | `removeOperationIdPrefix`    | no       | Strip the prefix (everything before the first `_`) from operation IDs before generating method names (e.g. `Pets_GetPets` → `getPets`). Default: `false`. |
 | `skipOperationExample`       | no       | Do not include operation examples from the spec in generated code. Default: `false`.                            |
 | `enablePostProcessFile`      | no       | Enable the external post-processing hook run after each generated file. The command is read from the `OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` environment variable. Default: `false`. |
-
-> **Note — default `globalProperties`:** The plugin currently defaults `apiTests` and `modelTests` to `"false"` in
-> `globalProperties`. This is a temporary workaround: the Kotlin Toolchain registers the generator's entire output
-> directory as a source set, so generated test files (which import JUnit) would fail to compile. Override these
-> explicitly in `globalProperties` if you need test files (e.g. to compile them separately). These defaults will be
-> removed once the Kotlin Toolchain supports declaring generated test source sets.
 
 ### Run the generator
 
