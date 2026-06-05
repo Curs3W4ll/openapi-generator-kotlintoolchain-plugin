@@ -1,0 +1,98 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  extends: [
+    "config:recommended",
+    ":dependencyDashboard",
+  ],
+
+  dependencyDashboard: true,
+  dependencyDashboardTitle: "Renovate Dependency Dashboard",
+
+  // Title template must satisfy the project's mr-title-lint regex:
+  // Rendered shape: "chore(deps): Update <dep> to <ver> #<dashboardIssue>".
+  commitMessagePrefix: "chore({{#if isMajor}}deps-major{{else}}deps{{/if}}):",
+  commitMessageAction: "Update",
+  commitMessageTopic: "{{depName}}",
+  commitMessageExtra: "to {{newVersion}}",
+  commitMessageSuffix: "#{{dependencyDashboardIssue}}",
+
+  commitBodyTable: true,
+
+  branchPrefix: "renovate/",
+  labels: ["dependencies"],
+  rebaseWhen: "behind-base-branch",
+  prConcurrentLimit: 10,
+
+  rangeStrategy: "pin",
+
+  // libs.versions.toml lives at repo root, not in gradle/
+  "gradle-version-catalog": {
+    managerFilePatterns: ["(^|/)libs\\.versions\\.toml$"],
+  },
+
+  // Renovate ships no native manager for GitLab CI components, so track
+  // them via a regex manager backed by the gitlab-tags datasource.
+  customManagers: [
+    {
+      customType: "regex",
+      managerFilePatterns: [
+        "(^|/)\\.gitlab/ci/.*\\.ya?ml$",
+        "(^|/)\\.gitlab-ci\\.ya?ml$",
+      ],
+      matchStrings: [
+        "component:\\s+(?<registryUrl>[^/]+)/(?<depName>[^@\\s]+)@(?<currentValue>[^\\s]+)",
+      ],
+      datasourceTemplate: "gitlab-tags",
+      registryUrlTemplate: "https://{{registryUrl}}",
+      versioningTemplate: "semver",
+    },
+  ],
+
+  packageRules: [
+    {
+      matchManagers: ["mise"],
+      groupName: "mise tools",
+      commitMessageTopic: "mise tools",
+    },
+    {
+      matchManagers: ["github-actions"],
+      groupName: "github actions",
+      commitMessageTopic: "github actions",
+    },
+    {
+      matchManagers: ["mise", "gradle-version-catalog"],
+      matchUpdateTypes: ["patch", "minor"],
+      automerge: true,
+      automergeType: "pr",
+      platformAutomerge: true,
+    },
+    // openapi-generator is the core library this plugin wraps. Patches
+    // automerge (covered by the rule above); keep minor manual since
+    // behavior may change.
+    {
+      matchManagers: ["gradle-version-catalog"],
+      matchPackageNames: ["org.openapitools:openapi-generator"],
+      matchUpdateTypes: ["minor"],
+      automerge: false,
+    },
+    {
+      matchManagers: ["gitlabci", "gitlabci-include"],
+      groupName: "CI Images",
+      automerge: false,
+    },
+    // Majors always manual, regardless of manager.
+    {
+      matchUpdateTypes: ["major"],
+      automerge: false,
+      commitMessagePrefix: "chore(deps-major):",
+    },
+  ],
+
+  vulnerabilityAlerts: {
+    enabled: true,
+    schedule: ["at any time"],
+    labels: ["security", "dependencies"],
+    commitMessagePrefix: "security(deps):",
+  },
+}

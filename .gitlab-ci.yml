@@ -1,6 +1,7 @@
 ---
 
 stages:
+  - maintenance
   - lint
   - build
   - check
@@ -25,6 +26,11 @@ workflow:
   auto_cancel:
     on_new_commit: interruptible
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TASK == ""'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      variables:
+        PIPELINE_NAME: 'Scheduled pipeline: $SCHEDULE_TASK'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
     - if: '$CI_PIPELINE_SOURCE == "web" && $RELEASE == "true" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'

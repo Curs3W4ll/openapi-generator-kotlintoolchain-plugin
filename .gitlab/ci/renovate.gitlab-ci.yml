@@ -1,0 +1,27 @@
+---
+
+# Self-hosted Renovate runner. Executes only on the scheduled-pipeline
+# trigger configured in the GitLab UI (Build → Pipeline schedules).
+# All other jobs in this pipeline are gated on merge_request_event,
+# default-branch push, or web release, so a scheduled pipeline runs
+# only this job.
+
+renovate:
+  stage: maintenance
+  needs: []
+  image:
+    name: renovate/renovate:39.230.0
+    entrypoint: [""]
+  extends:
+    - .not-interruptible
+  rules:
+    - !reference [".if-schedule-renovate", rules]
+  variables:
+    LOG_LEVEL: info
+    RENOVATE_PLATFORM: gitlab
+    RENOVATE_ENDPOINT: "${CI_API_V4_URL}"
+    RENOVATE_AUTODISCOVER: false # Disable Renovate "scan every repo I can see" mode
+    RENOVATE_REPOSITORIES: "${CI_PROJECT_PATH}"
+    RENOVATE_GIT_AUTHOR: "Renovate Bot <renovate-bot@${CI_SERVER_HOST}>"
+  script:
+    - renovate
