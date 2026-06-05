@@ -61,7 +61,7 @@
       commitMessageTopic: "github actions",
     },
     {
-      matchManagers: ["mise", "gradle-version-catalog"],
+      matchManagers: ["mise", "gradle-version-catalog", "gitlabci", "gitlabci-include"],
       matchUpdateTypes: ["patch", "minor"],
       automerge: true,
       automergeType: "pr",
@@ -79,7 +79,6 @@
     {
       matchManagers: ["gitlabci", "gitlabci-include"],
       groupName: "CI Images",
-      automerge: false,
     },
     // Majors always manual, regardless of manager.
     {
