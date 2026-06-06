@@ -26,11 +26,6 @@
 
   rangeStrategy: "pin",
 
-  // libs.versions.toml lives at repo root, not in gradle/
-  "gradle-version-catalog": {
-    managerFilePatterns: ["(^|/)libs\\.versions\\.toml$"],
-  },
-
   // Renovate ships no native manager for GitLab CI components, so track
   // them via a regex manager backed by the gitlab-tags datasource.
   customManagers: [
@@ -61,7 +56,7 @@
       commitMessageTopic: "github actions",
     },
     {
-      matchManagers: ["mise", "gradle-version-catalog", "gitlabci", "gitlabci-include"],
+      matchManagers: ["mise", "gradle", "gitlabci", "gitlabci-include"],
       matchUpdateTypes: ["patch", "minor"],
       automerge: true,
       automergeType: "pr",
@@ -71,7 +66,7 @@
     // automerge (covered by the rule above); keep minor manual since
     // behavior may change.
     {
-      matchManagers: ["gradle-version-catalog"],
+      matchManagers: ["gradle"],
       matchPackageNames: ["org.openapitools:openapi-generator"],
       matchUpdateTypes: ["minor"],
       automerge: false,
