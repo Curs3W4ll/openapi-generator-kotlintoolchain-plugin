@@ -22,19 +22,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         with:
           fetch-depth: 0
 
       - name: Generate release notes
         id: cliff
-        uses: orhun/git-cliff-action@v4
+        uses: orhun/git-cliff-action@v4.8.0
         with:
           config: cliff.toml
           args: --latest --strip all
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v3.0.0
         with:
           name: Release ${{ github.ref_name }}
           body: ${{ steps.cliff.outputs.content }}
