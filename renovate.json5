@@ -27,6 +27,10 @@
   labels: ["dependencies"],
   rebaseWhen: "behind-base-branch",
   prConcurrentLimit: 10,
+  // Disable hourly rate limiting; prConcurrentLimit already caps how
+  // many MRs can be open at once, so the default prHourlyLimit: 2 just
+  // queues legitimate updates under "Rate-Limited" on the dashboard.
+  prHourlyLimit: 0,
 
   rangeStrategy: "pin",
 
