@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Weekly Discord digest of merged Renovate dependency MRs.
+# Weekly Discord notifier for merged Renovate dependency MRs.
 #
 # Renovate auto-merges some updates, so the maintainer never sees the
 # release notes embedded in those MRs. This script runs on the
-# `deps-digest` scheduled pipeline, collects MRs merged in the past 7 days
-# that carry the `dependencies` label, extracts each MR's Release Notes
-# block, and posts a single concatenated markdown digest to a Discord
-# channel via webhook.
+# `deps-digest` scheduled pipeline, collects MRs merged in the past 7
+# days that carry the `dependencies` label, and posts ONE Discord embed
+# per upgraded dep — so each release-notes block is clearly tied to the
+# dep it belongs to. MRs without release notes (e.g. internal Renovate
+# config tweaks that happen to carry the `dependencies` label) are
+# silently skipped.
 
 set -euo pipefail
 
@@ -17,7 +19,6 @@ set -euo pipefail
 
 # 7-day rolling window. updated_after must be ISO 8601 in UTC.
 window_start=$(date -u -d "7 days ago" +"%Y-%m-%dT%H:%M:%SZ")
-week_label=$(date -u +"%Y-%m-%d")
 
 echo "Fetching dependency MRs merged since ${window_start}..."
 
@@ -32,68 +33,166 @@ mrs=$(curl --silent --fail --show-error \
   --data-urlencode "per_page=100" \
   "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests")
 
-count=$(jq 'length' <<<"${mrs}")
-echo "Found ${count} merged dependency MR(s)."
+mr_count=$(jq 'length' <<<"${mrs}")
+echo "Found ${mr_count} merged dependency MR(s)."
 
-if [ "${count}" -eq 0 ]; then
+if [ "${mr_count}" -eq 0 ]; then
   echo "Nothing to digest this week — skipping Discord post."
   exit 0
 fi
 
-# Build the markdown digest. Each MR contributes a heading (the MR title
-# already contains "<dep> to <ver>" from Renovate's commit-message
-# template) followed by the Release Notes block extracted from the MR
-# description.
-digest="## Dependency digest — week of ${week_label}"$'\n'
+# Discord embed limits (leave headroom below the hard caps).
+title_max=250
+desc_max=4000
+
+post_dep_embed() {
+  local dep_title="$1" mr_url="$2" mr_title="$3" body="$4"
+
+  if [ "${#dep_title}" -gt "${title_max}" ]; then
+    dep_title="${dep_title:0:${title_max}}…"
+  fi
+  if [ "${#body}" -gt "${desc_max}" ]; then
+    body="${body:0:${desc_max}}"$'\n…(truncated — see GitLab for the full notes)'
+  fi
+
+  local payload
+  payload=$(jq -n \
+    --arg title  "${dep_title}" \
+    --arg url    "${mr_url}" \
+    --arg desc   "${body}" \
+    --arg footer "from ${mr_title}" \
+    '{
+       embeds: [{
+         title:       $title,
+         url:         $url,
+         description: $desc,
+         color:       5814783,
+         footer:      { text: $footer }
+       }]
+     }')
+
+  curl --silent --fail --show-error \
+    --request POST \
+    --header "Content-Type: application/json" \
+    --data "${payload}" \
+    "${DISCORD_DEPS_WEBHOOK_URL}" >/dev/null
+
+  # Stay well below Discord's webhook rate limit (5 messages / 2s).
+  sleep 0.5
+}
+
+# awk parser: emits one record per <details> block found inside each MR
+# description's "### Release Notes" section. Output is a sequence of
+# DEP-START / SUMMARY: / VERSION: / BODY: / <body lines> / DEP-END lines
+# that the surrounding bash loop consumes as a state machine.
+parse_dep_blocks_script='
+  /^### Release Notes/  { in_rn = 1; next }
+  /^### Configuration/  { in_rn = 0 }
+  !in_rn                { next }
+
+  /<details>/ {
+    in_details = 1
+    summary    = ""
+    body       = ""
+    next
+  }
+
+  /<\/details>/ {
+    if (in_details) {
+      version = ""
+      if (match(body, /### \[`[^`]+`\]/)) {
+        full = substr(body, RSTART, RLENGTH)
+        if (match(full, /`[^`]+`/)) {
+          version = substr(full, RSTART + 1, RLENGTH - 2)
+        }
+      }
+      print "DEP-START"
+      print "SUMMARY:" summary
+      print "VERSION:" version
+      print "BODY:"
+      printf "%s", body
+      print ""
+      print "DEP-END"
+      in_details = 0
+    }
+    next
+  }
+
+  in_details {
+    line = $0
+    if (summary == "" && match(line, /<summary>[^<]*<\/summary>/) > 0) {
+      s = substr(line, RSTART, RLENGTH)
+      sub(/^<summary>/, "", s)
+      sub(/<\/summary>$/, "", s)
+      summary = s
+    } else {
+      body = body line "\n"
+    }
+  }
+'
+
+posted=0
+skipped_mrs=0
 
 while IFS= read -r mr_b64; do
   mr=$(printf '%s' "${mr_b64}" | base64 --decode)
-  title=$(jq -r '.title' <<<"${mr}")
-  url=$(jq -r '.web_url' <<<"${mr}")
+  mr_title=$(jq -r '.title' <<<"${mr}")
+  mr_url=$(jq -r '.web_url' <<<"${mr}")
   description=$(jq -r '.description // ""' <<<"${mr}")
 
-  # Extract content between Renovate's "### Release Notes" header and the
-  # next top-level section ("### Configuration") or end-of-input. Strip
-  # the wrapping <details>/<summary> markup so the message renders cleanly
-  # in Discord.
-  notes=$(printf '%s\n' "${description}" | awk '
-    /^### Release Notes/  { in_block = 1; next }
-    /^### Configuration/  { in_block = 0 }
-    /^---$/               { in_block = 0 }
-    in_block              { print }
-  ' | sed -E -e 's#</?details>##g' -e 's#</?summary>##g')
+  state=outside
+  summary=""
+  version=""
+  body=""
+  mr_posted=0
 
-  digest+=$'\n'"### [${title}](${url})"$'\n'
-  if [ -n "$(printf '%s' "${notes}" | tr -d '[:space:]')" ]; then
-    digest+="${notes}"$'\n'
-  else
-    digest+="_No release notes._"$'\n'
+  while IFS= read -r line; do
+    case "${line}" in
+      "DEP-START")
+        state=meta
+        summary=""
+        version=""
+        body=""
+        ;;
+      "DEP-END")
+        body="${body%$'\n'}"
+        if [ -n "${summary}" ]; then
+          if [ -n "${version}" ]; then
+            dep_title="${summary} — ${version}"
+          else
+            dep_title="${summary}"
+          fi
+          post_dep_embed "${dep_title}" "${mr_url}" "${mr_title}" "${body}"
+          posted=$((posted + 1))
+          mr_posted=$((mr_posted + 1))
+          echo "Posted: ${dep_title} (from ${mr_title})"
+        fi
+        state=outside
+        ;;
+      "BODY:")
+        state=body
+        ;;
+      *)
+        case "${state}" in
+          meta)
+            if [[ "${line}" == SUMMARY:* ]]; then
+              summary="${line#SUMMARY:}"
+            elif [[ "${line}" == VERSION:* ]]; then
+              version="${line#VERSION:}"
+            fi
+            ;;
+          body)
+            body+="${line}"$'\n'
+            ;;
+        esac
+        ;;
+    esac
+  done < <(printf '%s\n' "${description}" | awk "${parse_dep_blocks_script}")
+
+  if [ "${mr_posted}" -eq 0 ]; then
+    skipped_mrs=$((skipped_mrs + 1))
+    echo "Skipped (no release notes): ${mr_title}"
   fi
 done < <(jq -r '.[] | @base64' <<<"${mrs}")
 
-# Discord embed description limit is 4096 chars. Truncate with an
-# explicit marker so the maintainer can tell the digest was cut.
-max_len=4000
-if [ "${#digest}" -gt "${max_len}" ]; then
-  digest="${digest:0:${max_len}}"$'\n…(truncated — see GitLab for the full list)'
-fi
-
-payload=$(jq -n \
-  --arg title "Dependency digest — week of ${week_label}" \
-  --arg desc  "${digest}" \
-  '{
-     embeds: [{
-       title:       $title,
-       description: $desc,
-       color:       5814783
-     }]
-   }')
-
-echo "Posting digest to Discord webhook..."
-curl --silent --fail --show-error \
-  --request POST \
-  --header "Content-Type: application/json" \
-  --data "${payload}" \
-  "${DISCORD_DEPS_WEBHOOK_URL}" >/dev/null
-
-echo "Done."
+echo "Done. Posted ${posted} dep message(s); skipped ${skipped_mrs} MR(s) without release notes."
