@@ -23,3 +23,7 @@
 .if-schedule-renovate:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TASK == "renovate"'
+
+.if-schedule-deps-digest:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TASK == "deps-digest"'

@@ -19,3 +19,7 @@ To see the available mise tasks, use the `mise run` command.
 
 Open the project root in IntelliJ IDEA. No manual JDK setup is required: run configurations use Kotlin Toolchain's
 JDK auto-provisioning and will download the correct JDK automatically on first run.
+
+## Maintenance jobs
+
+- [Weekly dependency digest](deps-digest.md) — posts merged Renovate MRs to Discord every Monday.
