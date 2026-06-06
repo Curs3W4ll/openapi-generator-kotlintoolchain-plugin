@@ -1,26 +1,27 @@
 ---
 
+# Pipeline-level interface parameters exposed in the "Run pipeline" UI.
+# Only used by the release pipeline; harmless for MR / default-branch runs.
+spec:
+  inputs:
+    release:
+      type: boolean
+      default: false
+      description: "Set to true to trigger the release pipeline (default branch only)."
+    version:
+      type: string
+      default: ""
+      description: >-
+        Optional explicit version (e.g. 1.2.3). Leave empty to auto-bump
+        from conventional commits via git-cliff (recommended).
+---
+
 stages:
   - maintenance
   - lint
   - build
   - check
   - release
-
-# Variables exposed in the "Run pipeline" UI with descriptions and defaults.
-# Only used by the release pipeline; harmless for MR / default-branch runs.
-variables:
-  RELEASE:
-    value: "false"
-    description: "Set to 'true' to trigger the release pipeline (default branch only)."
-    options:
-      - "false"
-      - "true"
-  VERSION:
-    value: ""
-    description: >-
-      Optional explicit version (e.g. 1.2.3). Leave empty to auto-bump
-      from conventional commits via git-cliff (recommended).
 
 workflow:
   auto_cancel:
@@ -33,9 +34,13 @@ workflow:
         PIPELINE_NAME: 'Scheduled pipeline: $SCHEDULE_TASK'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
-    - if: '$CI_PIPELINE_SOURCE == "web" && $RELEASE == "true" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $[[ inputs.release ]] && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
       variables:
         PIPELINE_NAME: 'Release pipeline'
+        # Expose inputs as pipeline variables so included jobs/rules
+        # (which are file-scoped and cannot read inputs) can consume them.
+        RELEASE: "true"
+        VERSION: "$[[ inputs.version ]]"
 
 include:
   - local: .gitlab/ci/*.gitlab-ci.yml
