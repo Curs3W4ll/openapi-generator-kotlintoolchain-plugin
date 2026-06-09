@@ -4,7 +4,7 @@ deps-digest:
   stage: maintenance
   needs: []
   image:
-    name: alpine:3.23
+    name: alpine:3.24
   extends:
     - .default-retry
     - .not-interruptible
