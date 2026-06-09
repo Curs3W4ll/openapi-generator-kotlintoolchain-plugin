@@ -44,6 +44,7 @@ plugins:
 | `enabled`                    | yes      | Activates the plugin for this module.                                                                          |
 | `generatorName`              | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …).                                              |
 | `inputSpec`                  | yes      | Path to the OpenAPI spec file, relative to the module root.                                                    |
+| `configFile`                 | no       | Path to a JSON configuration file for the generator, relative to the module root. Inline settings take precedence over values loaded from the file. |
 | `verbose`                    | no       | Enable verbose logging from the generator. Default: `false`.                                                   |
 | `logToStderr`                | no       | Write all log messages to stderr instead of stdout. Default: `false`.                                          |
 | `dryRun`                     | no       | Run the generator without writing any files to disk. Default: `false`.                                         |

@@ -12,6 +12,7 @@ import kotlin.io.path.isRegularFile
 @TaskAction
 fun openApiGenerate(
   @Input inputSpec: Path,
+  @Input configFile: Path?,
   // TODO: #46 Use only one @Output Path once the Kotlin Toolchain supports it
   @Output kotlinMainSourcesDir: Path,
   @Output kotlinTestSourcesDir: Path,
@@ -78,8 +79,14 @@ fun openApiGenerate(
   }
   outputDir.createDirectories()
 
-  val cfg =
-    CodegenConfigurator().apply {
+  val baseConfig = if (configFile != null && configFile.isRegularFile()) {
+    CodegenConfigurator.fromFile(configFile.toString())
+  } else {
+    CodegenConfigurator()
+  }
+
+  val config =
+    baseConfig.apply {
       setGeneratorName(generatorName)
       setInputSpec(inputSpec.toString())
       setOutputDir(outputDir.toString())
@@ -125,5 +132,5 @@ fun openApiGenerate(
       skipOperationExample?.let { setSkipOperationExample(it) }
       enablePostProcessFile?.let { setEnablePostProcessFile(it) }
     }
-  DefaultGenerator(dryRun ?: false).opts(cfg.toClientOptInput()).generate()
+  DefaultGenerator(dryRun ?: false).opts(config.toClientOptInput()).generate()
 }

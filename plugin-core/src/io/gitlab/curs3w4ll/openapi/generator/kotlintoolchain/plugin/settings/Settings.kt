@@ -1,13 +1,19 @@
 package io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.settings
 
 import org.jetbrains.amper.plugins.Configurable
+import java.nio.file.Path
 
 @Configurable
 interface Settings {
   /**
    * The Open API specification location.
    */
-  val inputSpec: String
+  val inputSpec: Path
+
+  /**
+   * Path to a JSON configuration file for the generator, relative to the module root.
+   */
+  val configFile: Path?
 
   /**
    * The name of the generator which will handle codegen.
