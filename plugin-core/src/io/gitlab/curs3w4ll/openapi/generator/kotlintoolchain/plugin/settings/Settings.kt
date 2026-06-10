@@ -12,6 +12,13 @@ interface Settings {
   val inputSpec: Path?
 
   /**
+   * Path to a directory containing OpenAPI spec files referenced from [inputSpec] (e.g. via `$ref`),
+   * relative to the module root. Declaring this directory ensures changes to referenced files
+   * invalidate cached generation output. Used alongside [inputSpec].
+   */
+  val inputSpecsDirectory: Path?
+
+  /**
    * URL to a remote OpenAPI 2.0/3.x specification (e.g. a running service's `/openapi.json`,
    * a raw GitHub URL, or an internal API gateway).
    * Mutually exclusive with [inputSpec] — exactly one of the two must be set.

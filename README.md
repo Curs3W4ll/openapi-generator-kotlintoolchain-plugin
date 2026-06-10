@@ -44,6 +44,7 @@ plugins:
 | `enabled`                    | yes      | Activates the plugin for this module.                                                                          |
 | `generatorName`              | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …).                                              |
 | `inputSpec`                  | yes\*    | Path to a local OpenAPI spec file, relative to the module root. Mutually exclusive with `remoteInputSpec`.     |
+| `inputSpecsDirectory`        | no       | Directory of spec files referenced from `inputSpec` (e.g. via `$ref`). Tracked so edits invalidate the cache.  |
 | `remoteInputSpec`            | yes\*    | URL to a remote OpenAPI spec (e.g. a service's `/openapi.json`). Mutually exclusive with `inputSpec`.          |
 | `auth`                       | no       | Authorization header(s) used to fetch `remoteInputSpec` (e.g. `Authorization: Bearer <token>`).                |
 | `httpUserAgent`              | no       | Custom HTTP `User-Agent` used to fetch `remoteInputSpec`.                                                      |

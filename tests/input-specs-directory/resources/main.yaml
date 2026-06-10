@@ -1,0 +1,42 @@
+---
+openapi: 3.0.3
+info:
+  title: Multi-file Test API
+  version: 1.0.0
+  description: Root spec referencing schemas defined in sibling files
+
+paths:
+  /posts/{id}:
+    get:
+      operationId: getPost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The post matching the id
+          content:
+            application/json:
+              schema:
+                $ref: './openapi/posts.yaml#/components/schemas/PostDto'
+  /users/{id}:
+    get:
+      operationId: getUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The user matching the id
+          content:
+            application/json:
+              schema:
+                $ref: './openapi/users.yaml#/components/schemas/UserDto'

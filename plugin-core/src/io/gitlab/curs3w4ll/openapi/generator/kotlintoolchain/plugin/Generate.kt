@@ -7,11 +7,13 @@ import org.openapitools.codegen.DefaultGenerator
 import org.openapitools.codegen.config.CodegenConfigurator
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
+import kotlin.io.path.isDirectory
 import kotlin.io.path.isRegularFile
 
 @TaskAction
 fun openApiGenerate(
   @Input inputSpec: Path?,
+  @Input inputSpecsDirectory: Path?,
   remoteInputSpec: String?,
   auth: String?,
   httpUserAgent: String?,
@@ -74,6 +76,9 @@ fun openApiGenerate(
   }
   if (inputSpec != null && !inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
+  }
+  if (inputSpecsDirectory != null && !inputSpecsDirectory.isDirectory()) {
+    error("The input specs directory $inputSpecsDirectory does not exist or is not a directory")
   }
 
   val specSource = remoteInputSpec ?: inputSpec!!.toString()

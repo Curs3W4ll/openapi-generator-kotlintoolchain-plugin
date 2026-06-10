@@ -3,6 +3,7 @@ tasks:
   generateOpenAPI:
     action: !io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.openApiGenerate
       inputSpec: ${pluginSettings.inputSpec}
+      inputSpecsDirectory: ${pluginSettings.inputSpecsDirectory}
       remoteInputSpec: ${pluginSettings.remoteInputSpec}
       auth: ${pluginSettings.auth}
       httpUserAgent: ${pluginSettings.httpUserAgent}

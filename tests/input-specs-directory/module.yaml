@@ -1,0 +1,28 @@
+---
+product: jvm/app
+
+plugins:
+  openapi-generator:
+    enabled: true
+    generatorName: kotlin
+    inputSpec: "resources/main.yaml"
+    inputSpecsDirectory: "resources/openapi"
+
+dependencies:
+  - com.squareup.okhttp3:okhttp:4.12.0
+  - com.squareup.moshi:moshi-kotlin:1.15.2
+  - ch.qos.logback:logback-classic:1.5.18
+
+test-dependencies:
+  - io.kotlintest:kotlintest-runner-junit5:3.4.2
+
+settings:
+  jvm:
+    jdk:
+      version: 21
+      distributions: [corretto]
+    mainClass: input.specs.directory.ApplicationKt
+  kotlin:
+    version: 2.3.20
+
+description: Test project to ensure the plugin tracks a directory of spec files referenced via $ref
