@@ -11,7 +11,10 @@ import kotlin.io.path.isRegularFile
 
 @TaskAction
 fun openApiGenerate(
-  @Input inputSpec: Path,
+  @Input inputSpec: Path?,
+  remoteInputSpec: String?,
+  auth: String?,
+  httpUserAgent: String?,
   @Input configFile: Path?,
   // TODO: #46 Use only one @Output Path once the Kotlin Toolchain supports it
   @Output kotlinMainSourcesDir: Path,
@@ -63,9 +66,17 @@ fun openApiGenerate(
   skipOperationExample: Boolean?,
   enablePostProcessFile: Boolean?,
 ) {
-  if (!inputSpec.isRegularFile()) {
+  if (inputSpec != null && remoteInputSpec != null) {
+    error("Only one of inputSpec or remoteInputSpec may be set, but both were provided")
+  }
+  if (inputSpec == null && remoteInputSpec == null) {
+    error("Either inputSpec or remoteInputSpec must be set")
+  }
+  if (inputSpec != null && !inputSpec.isRegularFile()) {
     error("The input spec $inputSpec does not exist or is corrupted")
   }
+
+  val specSource = remoteInputSpec ?: inputSpec!!.toString()
 
   println("Generating files")
 
@@ -88,7 +99,9 @@ fun openApiGenerate(
   val config =
     baseConfig.apply {
       setGeneratorName(generatorName)
-      setInputSpec(inputSpec.toString())
+      setInputSpec(specSource)
+      auth?.let { setAuth(it) }
+      httpUserAgent?.let { setHttpUserAgent(it) }
       setOutputDir(outputDir.toString())
       setVerbose(verbose ?: false)
       setLogToStderr(logToStderr ?: false)

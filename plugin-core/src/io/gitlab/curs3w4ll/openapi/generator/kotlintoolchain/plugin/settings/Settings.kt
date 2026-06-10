@@ -6,9 +6,28 @@ import java.nio.file.Path
 @Configurable
 interface Settings {
   /**
-   * The Open API specification location.
+   * Path to a local OpenAPI specification file, relative to the module root.
+   * Mutually exclusive with [remoteInputSpec] — exactly one of the two must be set.
    */
-  val inputSpec: Path
+  val inputSpec: Path?
+
+  /**
+   * URL to a remote OpenAPI 2.0/3.x specification (e.g. a running service's `/openapi.json`,
+   * a raw GitHub URL, or an internal API gateway).
+   * Mutually exclusive with [inputSpec] — exactly one of the two must be set.
+   */
+  val remoteInputSpec: String?
+
+  /**
+   * Authorization header(s) used when fetching [remoteInputSpec]
+   * (e.g. `"Authorization: Bearer <token>"`). Multiple headers can be comma-separated.
+   */
+  val auth: String?
+
+  /**
+   * Custom HTTP `User-Agent` string used when fetching [remoteInputSpec].
+   */
+  val httpUserAgent: String?
 
   /**
    * Path to a JSON configuration file for the generator, relative to the module root.

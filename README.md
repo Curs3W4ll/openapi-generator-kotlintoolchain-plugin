@@ -43,15 +43,18 @@ plugins:
 |------------------------------|----------|----------------------------------------------------------------------------------------------------------------|
 | `enabled`                    | yes      | Activates the plugin for this module.                                                                          |
 | `generatorName`              | yes      | The OpenAPI Generator target (e.g. `kotlin`, `kotlin-server`, …).                                              |
-| `inputSpec`                  | yes      | Path to the OpenAPI spec file, relative to the module root.                                                    |
-| `configFile`                 | no       | Path to a JSON configuration file for the generator, relative to the module root. Inline settings take precedence over values loaded from the file. |
+| `inputSpec`                  | yes\*    | Path to a local OpenAPI spec file, relative to the module root. Mutually exclusive with `remoteInputSpec`.     |
+| `remoteInputSpec`            | yes\*    | URL to a remote OpenAPI spec (e.g. a service's `/openapi.json`). Mutually exclusive with `inputSpec`.          |
+| `auth`                       | no       | Authorization header(s) used to fetch `remoteInputSpec` (e.g. `Authorization: Bearer <token>`).                |
+| `httpUserAgent`              | no       | Custom HTTP `User-Agent` used to fetch `remoteInputSpec`.                                                      |
+| `configFile`                 | no       | Path to a JSON configuration file for the generator. Inline settings override values loaded from the file.     |
 | `verbose`                    | no       | Enable verbose logging from the generator. Default: `false`.                                                   |
 | `logToStderr`                | no       | Write all log messages to stderr instead of stdout. Default: `false`.                                          |
 | `dryRun`                     | no       | Run the generator without writing any files to disk. Default: `false`.                                         |
 | `validateSpec`               | no       | Enable or disable spec validation before code generation. Default: `true`.                                     |
 | `skipValidateSpec`           | no       | Skip spec validation entirely. Equivalent to `validateSpec: false`. Default: `false`.                          |
-| `cleanupOutput`              | no       | Delete all files in the output directory before generation begins. Default: `false`.                            |
-| `skipOverwrite`              | no       | Prevent the generator from overwriting files that already exist in the output directory. Default: `false`.      |
+| `cleanupOutput`              | no       | Delete all files in the output directory before generation begins. Default: `false`.                           |
+| `skipOverwrite`              | no       | Prevent the generator from overwriting files that already exist in the output directory. Default: `false`.     |
 | `globalProperties`           | no       | Global property overrides for the generator (e.g. `{apiTests: "false", debugModels: "true"}`).                 |
 | `configOptions`              | no       | Generator-specific options as key-value pairs (e.g. `dateLibrary`, `enumPropertyNaming`).                      |
 | `additionalProperties`       | no       | Extra properties made available inside Mustache/Handlebars templates (e.g. `{serializableModel: "true"}`).     |
@@ -80,14 +83,16 @@ plugins:
 | `enumNameMappings`           | no       | Map from enum value names to generated enum constant names (e.g. `{active: ENABLED}`).                         |
 | `operationIdNameMappings`    | no       | Map from operation IDs to generated method names (e.g. `{getPost: fetchPost}`).                                |
 | `schemaMappings`             | no       | Map from spec schema names to replacement types (e.g. `{PostDto: com.example.PostDto}`).                       |
-| `inlineSchemaNameMappings`   | no       | Map from auto-generated inline schema names to desired names (e.g. `{listPosts_200_response: PostCollection}`). |
+| `inlineSchemaNameMappings`   | no       | Map from inline schema names to desired names (e.g. `{listPosts_200_response: PostCollection}`).               |
 | `inlineSchemaOptions`        | no       | Options controlling how inline schemas are handled (e.g. `{RESOLVE_INLINE_ENUMS: "true"}`).                    |
 | `reservedWordsMappings`      | no       | Override how reserved words in the target language are escaped (e.g. `{class: clazz}`).                        |
 | `serverVariables`            | no       | Variable substitutions for server URL templates in the spec (e.g. `{scheme: https, env: prod}`).               |
-| `openapiNormalizer`          | no       | Rules for the OpenAPI normalizer that fix or transform the spec before generation (e.g. `{SET_TAGS_FOR_ALL_OPERATIONS: blog}`). |
-| `removeOperationIdPrefix`    | no       | Strip the prefix (everything before the first `_`) from operation IDs before generating method names (e.g. `Pets_GetPets` → `getPets`). Default: `false`. |
-| `skipOperationExample`       | no       | Do not include operation examples from the spec in generated code. Default: `false`.                            |
-| `enablePostProcessFile`      | no       | Enable the external post-processing hook run after each generated file. The command is read from the `OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` environment variable. Default: `false`. |
+| `openapiNormalizer`          | no       | Rules applied by the OpenAPI normalizer (e.g. `{SET_TAGS_FOR_ALL_OPERATIONS: blog}`).                          |
+| `removeOperationIdPrefix`    | no       | Strip the prefix (before first `_`) from operation IDs (e.g. `Pets_GetPets` → `getPets`). Default: `false`.    |
+| `skipOperationExample`       | no       | Do not include operation examples from the spec in generated code. Default: `false`.                           |
+| `enablePostProcessFile`      | no       | Enable the post-processing hook (`OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` env var). Default: `false`.          |
+
+\* Exactly one of `inputSpec` or `remoteInputSpec` must be set.
 
 ### Run the generator
 

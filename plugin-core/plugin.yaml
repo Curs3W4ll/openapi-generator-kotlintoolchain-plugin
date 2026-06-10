@@ -3,6 +3,9 @@ tasks:
   generateOpenAPI:
     action: !io.gitlab.curs3w4ll.openapi.generator.kotlintoolchain.plugin.openApiGenerate
       inputSpec: ${pluginSettings.inputSpec}
+      remoteInputSpec: ${pluginSettings.remoteInputSpec}
+      auth: ${pluginSettings.auth}
+      httpUserAgent: ${pluginSettings.httpUserAgent}
       configFile: ${pluginSettings.configFile}
       # TODO: #46 Use only one @Output Path once the Kotlin Toolchain supports it
       kotlinMainSourcesDir: ${taskOutputDir}/src/main/kotlin
