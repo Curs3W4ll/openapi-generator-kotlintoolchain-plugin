@@ -67,6 +67,8 @@ fun openApiGenerate(
   removeOperationIdPrefix: Boolean?,
   skipOperationExample: Boolean?,
   enablePostProcessFile: Boolean?,
+  @Input templateDir: Path?,
+  templateEngine: String?,
 ) {
   if (inputSpec != null && remoteInputSpec != null) {
     error("Only one of inputSpec or remoteInputSpec may be set, but both were provided")
@@ -79,6 +81,9 @@ fun openApiGenerate(
   }
   if (inputSpecsDirectory != null && !inputSpecsDirectory.isDirectory()) {
     error("The input specs directory $inputSpecsDirectory does not exist or is not a directory")
+  }
+  if (templateDir != null && !templateDir.isDirectory()) {
+    error("The template directory $templateDir does not exist or is not a directory")
   }
 
   val specSource = remoteInputSpec ?: inputSpec!!.toString()
@@ -149,6 +154,8 @@ fun openApiGenerate(
       removeOperationIdPrefix?.let { setRemoveOperationIdPrefix(it) }
       skipOperationExample?.let { setSkipOperationExample(it) }
       enablePostProcessFile?.let { setEnablePostProcessFile(it) }
+      templateDir?.let { setTemplateDir(it.toString()) }
+      templateEngine?.let { setTemplatingEngineName(it) }
     }
   DefaultGenerator(dryRun ?: false).opts(config.toClientOptInput()).generate()
 }

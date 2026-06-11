@@ -284,4 +284,16 @@ interface Settings {
    * The command to run is read from the `OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` environment variable.
    */
   val enablePostProcessFile: Boolean?
+
+  /**
+   * Path to a directory containing custom Mustache/Handlebars templates that override the
+   * generator's built-in templates, relative to the module root. Template files placed under
+   * this directory shadow the embedded templates with the same relative path.
+   */
+  val templateDir: Path?
+
+  /**
+   * Template engine to use when rendering templates: `"mustache"` (default) or `"handlebars"`.
+   */
+  val templateEngine: String?
 }

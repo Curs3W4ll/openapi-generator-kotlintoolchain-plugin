@@ -92,6 +92,8 @@ plugins:
 | `removeOperationIdPrefix`    | no       | Strip the prefix (before first `_`) from operation IDs (e.g. `Pets_GetPets` → `getPets`). Default: `false`.    |
 | `skipOperationExample`       | no       | Do not include operation examples from the spec in generated code. Default: `false`.                           |
 | `enablePostProcessFile`      | no       | Enable the post-processing hook (`OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` env var). Default: `false`.          |
+| `templateDir`                | no       | Directory of custom Mustache/Handlebars templates that override the built-in ones (mirroring their paths).     |
+| `templateEngine`             | no       | Template engine to render templates: `mustache` (default) or `handlebars`.                                     |
 
 \* Exactly one of `inputSpec` or `remoteInputSpec` must be set.
 

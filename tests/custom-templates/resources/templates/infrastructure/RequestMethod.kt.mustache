@@ -1,0 +1,12 @@
+package {{packageName}}.infrastructure
+
+/**
+ * Provides enumerated HTTP verbs
+ */
+{{#nonPublicApi}}internal {{/nonPublicApi}}{{^nonPublicApi}}{{#explicitApi}}public {{/explicitApi}}{{/nonPublicApi}}enum class RequestMethod {
+    GET, DELETE, HEAD, OPTIONS, PATCH, POST, PUT;
+
+    companion object {
+        const val CUSTOM_TEMPLATE_MARKER: String = "custom-template-marker"
+    }
+}

@@ -57,6 +57,8 @@ tasks:
       removeOperationIdPrefix: ${pluginSettings.removeOperationIdPrefix}
       skipOperationExample: ${pluginSettings.skipOperationExample}
       enablePostProcessFile: ${pluginSettings.enablePostProcessFile}
+      templateDir: ${pluginSettings.templateDir}
+      templateEngine: ${pluginSettings.templateEngine}
 
 generated:
   sources:
