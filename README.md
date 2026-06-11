@@ -141,6 +141,13 @@ See [docs/migration-from-gradle-plugin.md](docs/migration-from-gradle-plugin.md)
 for a before / after comparison, a Gradle-options → `module.yaml`-settings
 mapping table, and notes on behavioural differences.
 
+## Migrating from the Maven plugin
+
+Already using the official `openapi-generator-maven-plugin`?
+See [docs/migration-from-maven-plugin.md](docs/migration-from-maven-plugin.md)
+for a before / after comparison, a Maven-`<configuration>` → `module.yaml`-settings
+mapping table, and notes on behavioural differences.
+
 ## Contributing
 
 Contributions are welcome!
