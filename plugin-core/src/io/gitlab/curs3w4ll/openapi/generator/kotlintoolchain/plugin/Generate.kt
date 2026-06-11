@@ -69,6 +69,8 @@ fun openApiGenerate(
   enablePostProcessFile: Boolean?,
   @Input templateDir: Path?,
   templateEngine: String?,
+  @Input ignoreFileOverride: Path?,
+  openapiGeneratorIgnoreList: List<String>?,
 ) {
   if (inputSpec != null && remoteInputSpec != null) {
     error("Only one of inputSpec or remoteInputSpec may be set, but both were provided")
@@ -84,6 +86,9 @@ fun openApiGenerate(
   }
   if (templateDir != null && !templateDir.isDirectory()) {
     error("The template directory $templateDir does not exist or is not a directory")
+  }
+  if (ignoreFileOverride != null && !ignoreFileOverride.isRegularFile()) {
+    error("The ignore file override $ignoreFileOverride does not exist or is not a regular file")
   }
 
   val specSource = remoteInputSpec ?: inputSpec!!.toString()
@@ -156,6 +161,16 @@ fun openApiGenerate(
       enablePostProcessFile?.let { setEnablePostProcessFile(it) }
       templateDir?.let { setTemplateDir(it.toString()) }
       templateEngine?.let { setTemplatingEngineName(it) }
+      // Merge ignoreFileOverride lines into openapiGeneratorIgnoreList: when both are set,
+      // DefaultGenerator.generateOpenapiGeneratorIgnoreFile rewrites the ignore processor from
+      // the inline list and silently drops the override file's patterns.
+      val mergedIgnoreList = buildSet {
+        ignoreFileOverride?.let { addAll(it.toFile().readLines()) }
+        openapiGeneratorIgnoreList?.let { addAll(it) }
+      }
+      if (mergedIgnoreList.isNotEmpty()) {
+        setOpenapiGeneratorIgnoreList(mergedIgnoreList)
+      }
     }
   DefaultGenerator(dryRun ?: false).opts(config.toClientOptInput()).generate()
 }

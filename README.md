@@ -94,6 +94,8 @@ plugins:
 | `enablePostProcessFile`      | no       | Enable the post-processing hook (`OPENAPI_GENERATOR_IGNORE_FILE_OVERRIDE` env var). Default: `false`.          |
 | `templateDir`                | no       | Directory of custom Mustache/Handlebars templates that override the built-in ones (mirroring their paths).     |
 | `templateEngine`             | no       | Template engine to render templates: `mustache` (default) or `handlebars`.                                     |
+| `ignoreFileOverride`         | no       | Path to a custom `.openapi-generator-ignore` file whose patterns exclude matching files from generation.       |
+| `openapiGeneratorIgnoreList` | no       | Inline list of gitignore-style patterns excluded from generation (e.g. `[docs/**, src/test/**]`).              |
 
 \* Exactly one of `inputSpec` or `remoteInputSpec` must be set.
 

@@ -59,6 +59,8 @@ tasks:
       enablePostProcessFile: ${pluginSettings.enablePostProcessFile}
       templateDir: ${pluginSettings.templateDir}
       templateEngine: ${pluginSettings.templateEngine}
+      ignoreFileOverride: ${pluginSettings.ignoreFileOverride}
+      openapiGeneratorIgnoreList: ${pluginSettings.openapiGeneratorIgnoreList}
 
 generated:
   sources:

@@ -296,4 +296,18 @@ interface Settings {
    * Template engine to use when rendering templates: `"mustache"` (default) or `"handlebars"`.
    */
   val templateEngine: String?
+
+  /**
+   * Path to a custom `.openapi-generator-ignore` file used instead of the one in the output
+   * directory, relative to the module root. Patterns inside follow the gitignore syntax and
+   * exclude matching files from generation (e.g. test stubs, documentation, build scripts).
+   */
+  val ignoreFileOverride: Path?
+
+  /**
+   * Inline list of gitignore-style patterns added to the generator ignore list without requiring
+   * a separate ignore file. Combined with any patterns loaded from [ignoreFileOverride] or the
+   * default ignore file.
+   */
+  val openapiGeneratorIgnoreList: List<String>?
 }
