@@ -134,6 +134,13 @@ dependencies:
   - com.squareup.moshi:moshi-kotlin:1.15.2
 ```
 
+## Migrating from the Gradle plugin
+
+Already using the official `org.openapi.generator` Gradle plugin?
+See [docs/migration-from-gradle-plugin.md](docs/migration-from-gradle-plugin.md)
+for a before / after comparison, a Gradle-options → `module.yaml`-settings
+mapping table, and notes on behavioural differences.
+
 ## Contributing
 
 Contributions are welcome!
