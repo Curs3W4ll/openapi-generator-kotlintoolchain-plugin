@@ -10,7 +10,7 @@ renovate:
   stage: maintenance
   needs: []
   image:
-    name: renovate/renovate:43.260.0
+    name: renovate/renovate:43.270.1
     entrypoint: [""]
   extends:
     - .not-interruptible

@@ -10,7 +10,7 @@ default:
   # Runner's job shell would launch as `mise -c <script>` and mise would reject
   # the unknown `-c` flag before our script runs.
   image:
-    name: jdxcode/mise:2026.7.5
+    name: jdxcode/mise:2026.7.10
     entrypoint: [""]
 
 variables:
